@@ -1,0 +1,40 @@
+"Model","Term","OddsRatio","CI_low","CI_high","p"
+"Survey-weighted, multiple imputation (m=20)","Age (per SD)",3.634,2.747,4.809,1.845e-07
+"Survey-weighted, multiple imputation (m=20)","SystolicBP (per SD)",0.9555,0.7863,1.161,0.6191
+"Survey-weighted, multiple imputation (m=20)","DiastolicBP (per SD)",0.8422,0.7418,0.9561,0.01241
+"Survey-weighted, multiple imputation (m=20)","TotalCholesterol (per SD)",0.5693,0.3787,0.8558,0.01071
+"Survey-weighted, multiple imputation (m=20)","HDL (per SD)",1.028,0.7939,1.331,0.8205
+"Survey-weighted, multiple imputation (m=20)","Triglycerides (per SD)",1.36,1.041,1.776,0.02852
+"Survey-weighted, multiple imputation (m=20)","Glucose (per SD)",0.8764,0.6968,1.102,0.2354
+"Survey-weighted, multiple imputation (m=20)","HbA1c (per SD)",1.313,1.025,1.683,0.03376
+"Survey-weighted, multiple imputation (m=20)","Creatinine (per SD)",0.946,0.8107,1.104,0.4515
+"Survey-weighted, multiple imputation (m=20)","UricAcid (per SD)",1.145,0.9299,1.41,0.1834
+"Survey-weighted, multiple imputation (m=20)","LDH (per SD)",1.074,0.9362,1.232,0.2814
+"Survey-weighted, multiple imputation (m=20)","PlateletCount (per SD)",0.8469,0.7081,1.013,0.06629
+"Survey-weighted, multiple imputation (m=20)","RDW (per SD)",1.263,1.071,1.489,0.009206
+"Survey-weighted, multiple imputation (m=20)","SexMale",1.507,0.8136,2.792,0.1745
+"Survey-weighted, multiple imputation (m=20)","VigorousWorkYes",1.138,0.4611,2.81,0.7621
+"Survey-weighted, multiple imputation (m=20)","ModerateWorkYes",1.066,0.576,1.974,0.8255
+"Survey-weighted, multiple imputation (m=20)","DiabetesSelfReportBorderline",1.371,0.5248,3.579,0.4912
+"Survey-weighted, multiple imputation (m=20)","DiabetesSelfReportYes",1.03,0.5394,1.969,0.9218
+"Survey-weighted, multiple imputation (m=20)","FamilyHistoryDiabetesYes",1.851,1.409,2.432,0.0003078
+"Survey-weighted, multiple imputation (m=20)","StrokeHistoryYes",2.15,1.022,4.521,0.04442
+"Survey-weighted, complete cases, no triglycerides","Age (per SD)",3.62,2.668,4.912,2.012e-07
+"Survey-weighted, complete cases, no triglycerides","SystolicBP (per SD)",0.942,0.7912,1.122,0.4765
+"Survey-weighted, complete cases, no triglycerides","DiastolicBP (per SD)",0.8481,0.7612,0.945,0.005428
+"Survey-weighted, complete cases, no triglycerides","TotalCholesterol (per SD)",0.6651,0.4638,0.9537,0.02915
+"Survey-weighted, complete cases, no triglycerides","HDL (per SD)",0.945,0.7304,1.223,0.6465
+"Survey-weighted, complete cases, no triglycerides","Glucose (per SD)",0.9225,0.7241,1.175,0.4885
+"Survey-weighted, complete cases, no triglycerides","HbA1c (per SD)",1.377,1.064,1.783,0.0185
+"Survey-weighted, complete cases, no triglycerides","Creatinine (per SD)",0.9559,0.7993,1.143,0.5989
+"Survey-weighted, complete cases, no triglycerides","UricAcid (per SD)",1.125,0.9043,1.399,0.2683
+"Survey-weighted, complete cases, no triglycerides","LDH (per SD)",1.105,0.9364,1.303,0.219
+"Survey-weighted, complete cases, no triglycerides","PlateletCount (per SD)",0.8391,0.657,1.072,0.1472
+"Survey-weighted, complete cases, no triglycerides","RDW (per SD)",1.234,1.042,1.46,0.01817
+"Survey-weighted, complete cases, no triglycerides","SexMale",1.398,0.8546,2.286,0.1674
+"Survey-weighted, complete cases, no triglycerides","VigorousWorkYes",1.053,0.4219,2.626,0.9065
+"Survey-weighted, complete cases, no triglycerides","ModerateWorkYes",1.115,0.6532,1.904,0.67
+"Survey-weighted, complete cases, no triglycerides","DiabetesSelfReportBorderline",1.398,0.4893,3.996,0.5065
+"Survey-weighted, complete cases, no triglycerides","DiabetesSelfReportYes",0.9251,0.5047,1.696,0.7881
+"Survey-weighted, complete cases, no triglycerides","FamilyHistoryDiabetesYes",1.828,1.437,2.326,8.254e-05
+"Survey-weighted, complete cases, no triglycerides","StrokeHistoryYes",1.819,0.8759,3.777,0.1015

@@ -30,6 +30,14 @@ Screening operating point (logistic regression, 5-fold out-of-fold): at a 0.40 t
 
 ![Survey-weighted odds ratios](docs/svy_forest.png)
 
+**Cross-check against R `survey`** (`analysis/svy_logistic.R`, optional):
+
+| Quantity | R `survey` vs Python | Notes |
+|---|---|---|
+| Weighted prevalence, 18 groups (`svyciprop`, logit CI) | max difference in estimate / SE / CI: 0.00004 / 0.00005 / 0.00005 | same estimator; differences are rounding |
+| Adjusted ORs, complete cases (`svyglm`) | max difference 0.0005 in OR and CI bounds | confirms the Python sandwich-variance implementation |
+| Adjusted ORs, multiple imputation (m = 20) | point estimates within 0.05 for 19 of 20 terms; every term has the same significance conclusion | imputation models differ (`mice` pmm/logreg vs `IterativeImputer`). Self-reported diabetes differs most (1.03 vs 1.13): it is collinear with HbA1c and glucose, whose imputations differ, and its CI is wide (≈0.5–2.1) |
+
 Methods are written up TRIPOD-style in [`docs/TRIPOD_methods.md`](docs/TRIPOD_methods.md).
 
 Other corrections: the feature labeled "blood-relative stroke" was actually `MCQ160F`, the participant's own stroke history; the decision threshold is now chosen for screening sensitivity instead of defaulting to 0.5; SMOTE, when used, is applied inside each fold.

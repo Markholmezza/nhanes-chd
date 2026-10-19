@@ -102,6 +102,8 @@ for (v in num_vars) {
   m <- mean(full[[v]][full$dom], na.rm = TRUE); s <- sd(full[[v]][full$dom], na.rm = TRUE)
   full[[paste0(v, "_z")]] <- (full[[v]] - m) / s
 }
+# Rebuild the design so it contains the standardized predictors (svydesign stores a copy of the data)
+des <- svydesign(ids = ~SDMVPSU, strata = ~SDMVSTRA, weights = ~WTMEC2YR, nest = TRUE, data = full)
 z_vars <- paste0(num_vars, "_z")
 rhs <- c(z_vars, cat_vars)
 fml <- as.formula(paste("CHD_Flag ~", paste(rhs, collapse = " + ")))
