@@ -91,6 +91,10 @@ Three pages built from `outputs/`: (1) cohort and CHD prevalence by clinical ris
 - Internal validation only; a later NHANES cycle (2015-2016, 2017-2020) would be the natural external test set.
 - The paper's PSO-ANN was not re-implemented; its reported 0.97 accuracy is not comparable to AUC at 4% prevalence.
 
-## Credits
+## Author
 
-Originally a BIOL 485 (Emory) team project; the v1 preprocessing and baseline notebooks were written with a teammate. The audit, revalidation, Power BI report and this write-up are by Ziang Zhang.
+Ziang Zhang. This began as a team project for BIOL 485 at Emory University: I wrote the data pipeline and baseline models (v1), and teammates contributed later testing. The audit, revalidation, survey-weighted analysis and Power BI report were done independently after the course.
+
+## Acknowledgments
+
+I thank Dr. Gordon Berman (instructor) and Xinlin G. (teaching assistant) for their guidance on the original course project, and my teammates Varun V., Jason L. and Alison L. for testing the original pipeline. Any errors in the later work are mine.
