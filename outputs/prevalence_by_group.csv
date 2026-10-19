@@ -1,0 +1,18 @@
+Factor,Level,cases,n,Prevalence
+Age group,20-39,6,1953,0.0031
+Age group,40-59,41,1971,0.0208
+Age group,60+,185,1827,0.1013
+Sex,Female,93,3003,0.031
+Sex,Male,139,2748,0.0506
+Blood pressure,1 Normal,65,2304,0.0282
+Blood pressure,2 Elevated,44,825,0.0533
+Blood pressure,3 Stage 1 hypertension,31,1032,0.03
+Blood pressure,4 Stage 2 hypertension,68,936,0.0726
+HbA1c,1 Normal (<5.7%),63,3351,0.0188
+HbA1c,2 Prediabetes (5.7-6.4%),85,1428,0.0595
+HbA1c,3 Diabetes range (>=6.5%),69,597,0.1156
+Self-reported diabetes,Borderline,13,174,0.0747
+Self-reported diabetes,No,136,4860,0.028
+Self-reported diabetes,Yes,83,714,0.1162
+Stroke history,No,194,5551,0.0349
+Stroke history,Yes,38,196,0.1939

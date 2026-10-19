@@ -1,0 +1,4 @@
+Model,AUC,CI_low,CI_high
+Logistic regression,0.859,0.837,0.881
+Random forest,0.858,0.835,0.879
+KNN,0.748,0.713,0.781

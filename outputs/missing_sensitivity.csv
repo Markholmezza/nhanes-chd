@@ -1,0 +1,6 @@
+Strategy,N,Cases,AUC,CI_low,CI_high,Sensitivity,Specificity
+Mean imputation (baseline),5751,232,0.859,0.837,0.882,0.789,0.779
+Mean + missing indicators,5751,232,0.857,0.835,0.88,0.789,0.783
+MICE (iterative imputation),5751,232,0.86,0.838,0.883,0.789,0.782
+"Drop triglycerides, mean-impute rest",5751,232,0.859,0.837,0.881,0.802,0.781
+Complete cases only,2335,97,0.857,0.823,0.885,0.794,0.79

@@ -1,0 +1,40 @@
+Model,Term,Coef,SE,OddsRatio,CI_low,CI_high,p,df,FractionMissingInfo
+Multiple imputation (m=20),Age (per SD),1.2792,0.1288,3.5939,2.7223,4.7446,0.0,13.2234,0.0082
+Multiple imputation (m=20),SystolicBP (per SD),-0.0464,0.0895,0.9546,0.7852,1.1606,0.6136,11.8593,0.1045
+Multiple imputation (m=20),DiastolicBP (per SD),-0.1729,0.0562,0.8412,0.7445,0.9504,0.0094,12.2516,0.0775
+Multiple imputation (m=20),TotalCholesterol (per SD),-0.5271,0.1736,0.5903,0.4057,0.859,0.0096,12.9808,0.026
+Multiple imputation (m=20),HDL (per SD),0.0261,0.1178,1.0265,0.7956,1.3243,0.828,12.8908,0.0325
+Multiple imputation (m=20),Triglycerides (per SD),0.2893,0.096,1.3355,1.0763,1.6572,0.014,9.3678,0.271
+Multiple imputation (m=20),Glucose (per SD),-0.1359,0.1046,0.8729,0.6963,1.0944,0.2166,12.982,0.0259
+Multiple imputation (m=20),HbA1c (per SD),0.2658,0.1136,1.3045,1.0209,1.667,0.0357,13.1703,0.0121
+Multiple imputation (m=20),Creatinine (per SD),-0.0534,0.0726,0.948,0.81,1.1094,0.4752,12.702,0.046
+Multiple imputation (m=20),UricAcid (per SD),0.1344,0.0978,1.1439,0.9261,1.4128,0.1925,13.049,0.021
+Multiple imputation (m=20),LDH (per SD),0.0721,0.0653,1.0748,0.9332,1.2379,0.2898,12.8505,0.0354
+Multiple imputation (m=20),PlateletCount (per SD),-0.1815,0.0849,0.834,0.6944,1.0017,0.0518,13.0924,0.0179
+Multiple imputation (m=20),RDW (per SD),0.2434,0.078,1.2756,1.0777,1.5098,0.0081,12.9822,0.0259
+Multiple imputation (m=20),Sex: Male,0.4142,0.2806,1.5131,0.8262,2.771,0.1633,13.2652,0.0051
+Multiple imputation (m=20),VigorousWork: Yes,0.1211,0.4173,1.1287,0.4592,2.7742,0.7762,13.3102,0.0017
+Multiple imputation (m=20),ModerateWork: Yes,0.073,0.2865,1.0757,0.5801,1.9947,0.8029,13.2912,0.0032
+Multiple imputation (m=20),FamilyHistoryDiabetes: Yes,0.5898,0.1203,1.8037,1.391,2.3388,0.0003,13.0074,0.0241
+Multiple imputation (m=20),StrokeHistory: Yes,0.7595,0.344,2.1372,1.018,4.4866,0.0454,13.2711,0.0047
+Multiple imputation (m=20),Diabetes: Borderline,0.3196,0.445,1.3766,0.5273,3.5936,0.4852,13.2563,0.0058
+Multiple imputation (m=20),Diabetes: Yes,0.1263,0.2819,1.1347,0.6176,2.0846,0.6613,13.1718,0.012
+"Complete cases, no triglycerides",Age (per SD),1.2865,0.1432,3.6201,2.6677,4.9124,0.0,15.0,
+"Complete cases, no triglycerides",SystolicBP (per SD),-0.0598,0.0818,0.942,0.7912,1.1215,0.4765,15.0,
+"Complete cases, no triglycerides",DiastolicBP (per SD),-0.1647,0.0507,0.8481,0.7612,0.945,0.0054,15.0,
+"Complete cases, no triglycerides",TotalCholesterol (per SD),-0.4079,0.1691,0.6651,0.4638,0.9537,0.0291,15.0,
+"Complete cases, no triglycerides",HDL (per SD),-0.0566,0.1209,0.945,0.7303,1.2227,0.6465,15.0,
+"Complete cases, no triglycerides",Glucose (per SD),-0.0807,0.1136,0.9225,0.7241,1.1752,0.4885,15.0,
+"Complete cases, no triglycerides",HbA1c (per SD),0.3201,0.1212,1.3773,1.0638,1.7832,0.0185,15.0,
+"Complete cases, no triglycerides",Creatinine (per SD),-0.0451,0.084,0.9559,0.7992,1.1432,0.5989,15.0,
+"Complete cases, no triglycerides",UricAcid (per SD),0.1178,0.1024,1.125,0.9043,1.3994,0.2683,15.0,
+"Complete cases, no triglycerides",LDH (per SD),0.0994,0.0775,1.1045,0.9364,1.3029,0.219,15.0,
+"Complete cases, no triglycerides",PlateletCount (per SD),-0.1754,0.1148,0.8391,0.657,1.0717,0.1472,15.0,
+"Complete cases, no triglycerides",RDW (per SD),0.2099,0.0792,1.2335,1.0419,1.4603,0.0182,15.0,
+"Complete cases, no triglycerides",Sex: Male,0.3348,0.2308,1.3976,0.8546,2.2856,0.1674,15.0,
+"Complete cases, no triglycerides",VigorousWork: Yes,0.0512,0.4289,1.0525,0.4219,2.626,0.9065,15.0,
+"Complete cases, no triglycerides",ModerateWork: Yes,0.1091,0.251,1.1153,0.6532,1.9043,0.67,15.0,
+"Complete cases, no triglycerides",FamilyHistoryDiabetes: Yes,0.6034,0.113,1.8284,1.437,2.3264,0.0001,15.0,
+"Complete cases, no triglycerides",StrokeHistory: Yes,0.5982,0.3428,1.8188,0.8759,3.7768,0.1015,15.0,
+"Complete cases, no triglycerides",Diabetes: Borderline,0.3353,0.4926,1.3984,0.4893,3.9961,0.5065,15.0,
+"Complete cases, no triglycerides",Diabetes: Yes,-0.0778,0.2843,0.9251,0.5047,1.6959,0.7881,15.0,

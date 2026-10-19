@@ -1,0 +1,193 @@
+// ============================================================
+// NHANES CHD dashboard - DAX measures
+// Paste each block into Power BI Desktop: Modeling > New measure.
+// Table names assume the CSVs were loaded with their file names
+// (nhanes_chd_cohort, prevalence_by_group, model_comparison, ...).
+// ============================================================
+
+// ---------- Cohort (fact table: nhanes_chd_cohort, one row per SEQN) ----------
+
+Participants =
+DISTINCTCOUNT ( nhanes_chd_cohort[SEQN] )
+
+CHD Cases =
+SUM ( nhanes_chd_cohort[CHD_Flag] )
+
+CHD Prevalence =
+DIVIDE ( [CHD Cases], [Participants] )
+
+// Reference line that ignores slicers, so every bar is compared with the whole cohort
+CHD Prevalence (All Adults) =
+CALCULATE ( [CHD Prevalence], ALL ( nhanes_chd_cohort ) )
+
+Prevalence vs All Adults =
+[CHD Prevalence] - [CHD Prevalence (All Adults)]
+
+Median Age =
+MEDIAN ( nhanes_chd_cohort[Age] )
+
+Share Female =
+DIVIDE (
+    CALCULATE ( [Participants], nhanes_chd_cohort[Sex] = "Female" ),
+    [Participants]
+)
+
+// Text for a KPI card subtitle, e.g. "232 of 5,751 adults"
+CHD Cases Label =
+FORMAT ( [CHD Cases], "#,0" ) & " of " & FORMAT ( [Participants], "#,0" ) & " adults"
+
+// Hide groups that are too small to show a stable rate (use as a visual-level filter: >= 1)
+Group Is Large Enough =
+IF ( [Participants] >= 30, 1, 0 )
+
+// ---------- Missingness, computed live from the fact table ----------
+// (missingness.csv is also provided if you prefer a static table)
+
+Missing Triglycerides % =
+DIVIDE (
+    COUNTROWS ( FILTER ( nhanes_chd_cohort, ISBLANK ( nhanes_chd_cohort[Triglycerides] ) ) ),
+    [Participants]
+)
+
+Missing Blood Pressure % =
+DIVIDE (
+    COUNTROWS ( FILTER ( nhanes_chd_cohort, ISBLANK ( nhanes_chd_cohort[SystolicBP] ) ) ),
+    [Participants]
+)
+
+// ---------- Data audit (funnel table) ----------
+
+Rows Before Dedup =
+CALCULATE ( MAX ( funnel[Count] ), funnel[Order] = 3 )   // rows with a valid CHD label
+
+Participants After Dedup =
+CALCULATE ( MAX ( funnel[Count] ), funnel[Order] = 4 )   // unique participants with a valid label
+
+Inflation Factor =
+DIVIDE ( [Rows Before Dedup], [Participants After Dedup] )   // 2.63x
+
+Inflation Label =
+FORMAT ( [Inflation Factor], "0.0" ) & "x rows per person"
+
+// ---------- Model comparison (model_comparison: one row per Model x Setup) ----------
+
+AUC Original =
+CALCULATE (
+    MAX ( model_comparison[AUC] ),
+    model_comparison[Setup] = "Original (row-level split)"
+)
+
+AUC Corrected =
+CALCULATE (
+    MAX ( model_comparison[AUC] ),
+    model_comparison[Setup] = "Corrected (participant-level CV)"
+)
+
+AUC Drop =
+[AUC Original] - [AUC Corrected]
+
+AUC Drop Label =
+VAR d = [AUC Drop]
+RETURN IF ( d > 0.02, "-" & FORMAT ( d, "0.000" ), "about the same" )
+
+Best Corrected Model =
+VAR t =
+    TOPN (
+        1,
+        FILTER ( model_comparison, model_comparison[Setup] = "Corrected (participant-level CV)" ),
+        model_comparison[AUC], DESC
+    )
+RETURN MAXX ( t, model_comparison[Model] )
+
+Sensitivity Corrected =
+CALCULATE (
+    MAX ( model_comparison[Sensitivity] ),
+    model_comparison[Setup] = "Corrected (participant-level CV)"
+)
+
+Specificity Corrected =
+CALCULATE (
+    MAX ( model_comparison[Specificity] ),
+    model_comparison[Setup] = "Corrected (participant-level CV)"
+)
+
+// ---------- Leakage card (static number from the audit notebook, section 4) ----------
+// 75.4% of original test rows had an exact copy in the SMOTE training set.
+// Put it in a one-row table "leakage" (Metric, Value) or hard-code it in a card:
+Leaked Test Rows % = 0.754
+Leaked CHD Test Rows % = 0.978
+
+// ---------- Threshold curve (threshold_curve: Model x Threshold) ----------
+
+Selected Threshold =
+SELECTEDVALUE ( threshold_curve[Threshold], 0.5 )   // bind a slicer (single value) to Threshold
+
+Sensitivity at Threshold =
+CALCULATE (
+    MAX ( threshold_curve[Sensitivity] ),
+    threshold_curve[Threshold] = [Selected Threshold],
+    threshold_curve[Model] = "Logistic regression"
+)
+
+Specificity at Threshold =
+CALCULATE (
+    MAX ( threshold_curve[Specificity] ),
+    threshold_curve[Threshold] = [Selected Threshold],
+    threshold_curve[Model] = "Logistic regression"
+)
+
+Flagged Adults at Threshold =
+CALCULATE (
+    MAX ( threshold_curve[FlaggedShare] ),
+    threshold_curve[Threshold] = [Selected Threshold],
+    threshold_curve[Model] = "Logistic regression"
+) * [Participants After Dedup]
+
+// ---------- Odds ratios (lr_odds_ratios: one row per feature) ----------
+
+OR Error Low =
+MAX ( lr_odds_ratios[OddsRatio] ) - MAX ( lr_odds_ratios[CI_low] )
+
+OR Error High =
+MAX ( lr_odds_ratios[CI_high] ) - MAX ( lr_odds_ratios[OddsRatio] )
+
+OR Direction Color =
+IF ( MAX ( lr_odds_ratios[OddsRatio] ) >= 1, "#1A73E8", "#9AA0A6" )   // use in conditional formatting > field value
+
+// ---------- Survey-weighted estimates (page 3) ----------
+// Point estimates can be computed live from the fact table because WTMEC2YR is in it.
+// Design-based CIs cannot be computed in DAX (they need strata/PSU variance); take them from weighted_prevalence.
+
+Weighted Prevalence (live) =
+DIVIDE (
+    SUMX ( nhanes_chd_cohort, nhanes_chd_cohort[WTMEC2YR] * nhanes_chd_cohort[CHD_Flag] ),
+    SUM ( nhanes_chd_cohort[WTMEC2YR] )
+)
+
+Represented Adults (Millions) =
+DIVIDE ( SUM ( nhanes_chd_cohort[WTMEC2YR] ), 1e6 )
+
+Adults With CHD (Millions) =
+DIVIDE ( SUMX ( nhanes_chd_cohort, nhanes_chd_cohort[WTMEC2YR] * nhanes_chd_cohort[CHD_Flag] ), 1e6 )
+
+Weighted Prevalence (All Adults) =
+CALCULATE ( MAX ( weighted_prevalence[WeightedPrevalence] ), weighted_prevalence[Factor] = "All adults" )
+
+CI Label =
+VAR lo = CALCULATE ( MAX ( weighted_prevalence[CI_low] ), weighted_prevalence[Factor] = "All adults" )
+VAR hi = CALCULATE ( MAX ( weighted_prevalence[CI_high] ), weighted_prevalence[Factor] = "All adults" )
+RETURN FORMAT ( lo, "0.0%" ) & " – " & FORMAT ( hi, "0.0%" )
+
+Weighting Shift =
+[Weighted Prevalence (live)] - [CHD Prevalence]     // how much weighting moves the estimate
+
+// ---------- Calibration (page 3) ----------
+
+Brier Score =
+MAX ( calibration_summary[Brier] )
+
+Calibration Slope =
+MAX ( calibration_summary[CalibrationSlope] )
+
+Calibration In The Large =
+MAX ( calibration_summary[MeanPredicted] ) - MAX ( calibration_summary[ObservedRate] )

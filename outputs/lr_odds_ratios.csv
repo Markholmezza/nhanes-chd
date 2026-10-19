@@ -1,0 +1,32 @@
+Feature,OddsRatio,CI_low,CI_high,Direction,AbsLogOR
+Age,3.665,2.862,4.935,Higher odds,1.299
+StrokeHistory_No,0.49,0.362,0.632,Lower odds,0.714
+Blood-Rel Diabetes_9.0,0.556,0.077,0.966,Lower odds,0.586
+StrokeHistory_Yes,1.739,1.149,2.379,Higher odds,0.553
+Blood-Rel Diabetes_1.0,1.452,1.077,3.587,Higher odds,0.373
+Cholesterol,0.728,0.568,0.879,Lower odds,0.317
+Diabetes_1.0,1.35,0.931,2.126,Higher odds,0.3
+Diabetes_2.0,0.744,0.53,1.019,Lower odds,0.295
+Gender_Female,0.766,0.547,0.916,Lower odds,0.267
+Red-Cell Distribution Width,1.266,1.058,1.465,Higher odds,0.236
+Diastolic,0.798,0.612,0.95,Lower odds,0.226
+HDL,0.802,0.66,0.979,Lower odds,0.22
+LDH,1.212,1.014,1.515,Higher odds,0.192
+Glycohemoglobin,1.208,0.968,1.682,Higher odds,0.189
+Glucose,0.844,0.646,0.999,Lower odds,0.17
+Moderate Work_2.0,0.852,0.556,1.228,Lower odds,0.16
+Platelet Count,0.868,0.71,1.012,Lower odds,0.142
+Triglycerides,1.144,0.981,1.379,Higher odds,0.134
+Diabetes_3.0,0.887,0.508,1.319,Lower odds,0.12
+Vigorous Work_2.0,0.897,0.683,1.225,Lower odds,0.109
+Gender_Male,1.112,0.831,1.41,Higher odds,0.107
+Uric Acid,1.057,0.872,1.285,Higher odds,0.055
+Blood-Rel Diabetes_2.0,1.055,0.786,2.598,Higher odds,0.053
+Moderate Work_9.0,1.051,0.441,2.256,Higher odds,0.05
+Diabetes_9.0,0.957,0.537,0.996,Lower odds,0.044
+Vigorous Work_1.0,0.96,0.664,1.298,Lower odds,0.041
+Moderate Work_1.0,0.961,0.608,1.452,Lower odds,0.04
+Systolic,0.974,0.826,1.157,Lower odds,0.026
+Moderate Work_7.0,0.99,0.763,0.993,Lower odds,0.01
+Vigorous Work_7.0,0.99,0.763,0.993,Lower odds,0.01
+Creatinine,1.01,0.827,1.231,Higher odds,0.01

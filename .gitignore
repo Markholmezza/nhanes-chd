@@ -1,0 +1,9 @@
+# Raw NHANES files are large and public: download them from the CDC (see README)
+data/raw/
+# Row-level processed files (regenerate with notebooks/data_preprocessing.ipynb)
+data/processed/
+# Keep the small analytic tables in outputs/, ignore figures that notebooks regenerate
+outputs/*.png
+.ipynb_checkpoints/
+__pycache__/
+.DS_Store

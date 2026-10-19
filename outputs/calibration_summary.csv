@@ -1,0 +1,4 @@
+Model,AUC,Brier,MeanPredicted,ObservedRate,CalibrationSlope
+Logistic regression (unweighted),0.8604,0.0352,0.0405,0.0403,0.938
+Logistic regression (class-weighted),0.8589,0.1506,0.3008,0.0403,0.775
+Random forest (class-weighted),0.8583,0.0443,0.106,0.0403,1.0592

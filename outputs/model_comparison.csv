@@ -1,0 +1,7 @@
+Setup,Model,AUC,Accuracy,Sensitivity,Specificity,Threshold
+Original (row-level split),Logistic regression,0.822,0.719,0.775,0.712,0.5
+Original (row-level split),Random forest,0.999,0.996,0.976,0.999,0.5
+Original (row-level split),KNN,0.987,0.966,0.963,0.966,0.5
+Corrected (participant-level CV),Logistic regression,0.859,0.779,0.789,0.779,0.5
+Corrected (participant-level CV),Random forest,0.858,0.948,0.155,0.981,0.5
+Corrected (participant-level CV),KNN,0.748,0.735,0.698,0.737,0.04

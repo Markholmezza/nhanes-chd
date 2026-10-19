@@ -1,0 +1,5 @@
+Model,Balancing,AUC,Accuracy,Sensitivity,Specificity
+Logistic regression,SMOTE inside each fold,0.856,0.789,0.754,0.791
+Logistic regression,Class weights,0.859,0.779,0.789,0.779
+Random forest,SMOTE inside each fold,0.84,0.939,0.25,0.968
+Random forest,Class weights,0.858,0.948,0.155,0.981

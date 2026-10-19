@@ -1,0 +1,5 @@
+Step,Count,Order
+Rows after merging six NHANES files,20194,1
+Unique participants (SEQN),10175,2
+Rows with a valid CHD label,15103,3
+Unique participants with a valid CHD label,5751,4

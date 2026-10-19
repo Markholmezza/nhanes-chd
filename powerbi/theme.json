@@ -1,0 +1,11 @@
+{
+  "name": "NHANES CHD",
+  "dataColors": ["#1A73E8", "#BDC1C6", "#5F6368", "#D93025", "#188038"],
+  "background": "#FFFFFF",
+  "foreground": "#202124",
+  "tableAccent": "#1A73E8",
+  "textClasses": {
+    "title": {"fontSize": 14, "fontFace": "Segoe UI Semibold", "color": "#202124"},
+    "label": {"fontSize": 10, "fontFace": "Segoe UI", "color": "#5F6368"}
+  }
+}
