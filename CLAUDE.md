@@ -5,7 +5,8 @@ A CHD-prediction project on CDC NHANES 2013-2014 that became a data-leakage audi
 
 ## Layout
 - `notebooks/data_preprocessing.ipynb` — v2 pipeline, one row per participant. Writes `data/processed/`.
-- `notebooks/nhanes_chd_audit_and_revalidation.ipynb` — audit + corrected models. Reads the **v1** artifacts in `data/` and writes `outputs/*.csv` (9 tables for Power BI).
+- `notebooks/nhanes_chd_audit_and_revalidation.ipynb` — audit + corrected models. Reads the **v1** artifacts in `data/` and writes `outputs/*.csv` (15 tables for Power BI).
+- `notebooks/preprocessing_v1_original.ipynb` — the original (v1) preprocessing with the one-to-many join; produced `data/selected_features_v1.csv`. Kept as history, do not fix.
 - `notebooks/baseline_v1_original.ipynb` — the original (leaky) modeling notebook. Do not "fix" it; it is kept as the "before".
 - `analysis/svy_logistic.R` — OPTIONAL R cross-check of notebook sections 12-13. Writes `outputs/svy_prevalence_crosscheck.csv`, `outputs/svy_odds_ratios_R.csv`. The main analysis is Python; R is not required.
 - `powerbi/` — `POWERBI_GUIDE.md` (three page specs), `measures.dax`, `theme.json`.
@@ -25,9 +26,9 @@ A CHD-prediction project on CDC NHANES 2013-2014 that became a data-leakage audi
 - Audit funnel: 20,194 rows → 10,175 SEQN → 15,103 labeled rows → **5,751** labeled participants.
 - Cohort: 232 CHD cases (4.0%), median age 48.
 - Leakage: ~75% of original test rows have an exact copy in the SMOTE training set.
-- Corrected AUC (5-fold, participant-level): LR 0.859, RF 0.858, KNN 0.745 (bootstrap CIs ±0.02). If RF comes back > 0.95, duplicates are back — stop and investigate.
+- Corrected AUC (5-fold, participant-level): LR 0.859, RF 0.858, KNN 0.748 (bootstrap CIs ±0.02). If RF comes back > 0.95, duplicates are back — stop and investigate.
 - Threshold for ≥85% sensitivity (LR): 0.40 → sensitivity 0.86, specificity 0.72, 31% flagged.
-- SMOTE inside fold vs class weights: LR 0.857 vs 0.859; RF 0.842 vs 0.858 (SMOTE numbers may differ in the third decimal between imbalanced-learn versions).
+- SMOTE inside fold vs class weights: LR 0.856 vs 0.859; RF 0.840 vs 0.858. SMOTE comes from the real `imbalanced-learn` package (`imblearn.pipeline.Pipeline`, verified with 0.14.2); the numbers may differ in the third decimal between imbalanced-learn versions.
 - Top odds ratio: Age 3.67 per SD.
 - Calibration (unweighted LR): mean predicted 0.0405 vs observed 0.0403, slope 0.94, Brier 0.0352. Class-weighted LR: mean predicted 0.30, Brier 0.151.
 - Decision curve: unweighted LR beats treat-all/none at every threshold 0.01–0.30; class-weighted LR negative from 0.05.

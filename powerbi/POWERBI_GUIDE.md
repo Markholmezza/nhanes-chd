@@ -1,6 +1,6 @@
 # Power BI report: "CHD on NHANES — Cohort Audit & Model Revalidation"
 
-Three pages. Page 1 is the clinical story (who has CHD). Page 2 is the data-science story (why the original 0.99 AUC was wrong and what the honest numbers are). Page 3 is the biostatistics story (U.S. population estimates with survey weights, calibration, decision curve). Pages 2 and 3 are the ones to screenshot for a resume or portfolio.
+Three pages. Page 1 is the clinical story (who has CHD). Page 2 is the data-science story (why the original 0.999 AUC was wrong and what the honest numbers are). Page 3 is the biostatistics story (U.S. population estimates with survey weights, calibration, decision curve). Pages 2 and 3 are the ones to screenshot for a resume or portfolio.
 
 All inputs come from `outputs/` after running `notebooks/nhanes_chd_audit_and_revalidation.ipynb`.
 
@@ -74,12 +74,12 @@ Visual-by-visual:
 
 ```
 ┌──────────────────────────────────────────────────────────────────────────────┐
-│ The original 0.99 AUC came from duplicated participants, not from the model   │
+│ The original 0.999 AUC came from duplicated participants, not from the model  │
 ├──────────────────────────┬───────────────────────────────────────────────────┤
 │ Funnel: rows → people    │ AUC, original vs corrected (dumbbell / clustered) │
-│  20,194 rows merged      │  Random forest   0.998 ●────────────● 0.858       │
-│  15,103 labeled rows     │  KNN             0.987 ●──────● 0.745             │
-│   5,751 participants     │  Logistic reg.   0.820 ●─● 0.859                  │
+│  20,194 rows merged      │  Random forest   0.999 ●────────────● 0.858       │
+│  15,103 labeled rows     │  KNN             0.987 ●──────● 0.748             │
+│   5,751 participants     │  Logistic reg.   0.822 ●─● 0.859                  │
 │  "2.6x rows per person"  │  (error bars from auc_bootstrap_ci)               │
 ├──────────────────────────┼───────────────────────────────────────────────────┤
 │ 75% of test rows had an  │ Corrected models: sensitivity / specificity table │
@@ -156,7 +156,7 @@ Two colors carry meaning everywhere: blue = corrected / high-risk / the thing to
 ## 6. Checks before you screenshot
 
 - Page 1 KPI cards show 5,751 / 232 / 4.0% / 48 with no slicer selected.
-- Page 2 funnel ends at 5,751 and the RF bars read 0.998 → 0.858.
+- Page 2 funnel ends at 5,751 and the RF bars read 0.999 → 0.858.
 - Move the threshold slicer to 0.25 and confirm sensitivity rises and specificity falls.
 - Page 3 shows 3.6% (2.8–4.7%) and 8.3 M; the weighted/unweighted toggle on page 1 moves overall prevalence between 3.6% and 4.0%.
 - Publish to Power BI Service and use "Publish to web" only if you are comfortable with the data being public (it is de-identified CDC public-use data, so this is generally fine); otherwise export a PDF (File > Export > PDF) for the portfolio.

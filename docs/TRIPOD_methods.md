@@ -33,7 +33,7 @@ Triglycerides were missing for 55.7% because NHANES measures them only in the mo
 | Participants / events | 5,751 / 232 (4.0%) |
 | AUC, logistic regression | 0.859 (0.837-0.881) |
 | AUC, random forest | 0.858 (0.835-0.879); paired difference vs LR +0.001 (-0.011 to +0.012) |
-| AUC, KNN | 0.745 (0.711-0.780) |
+| AUC, KNN | 0.748 (0.713-0.781) |
 | Calibration, unweighted LR | mean predicted 4.05% vs observed 4.03%, slope 0.94, Brier 0.035 (no-skill 0.039) |
 | Calibration, class-weighted LR | mean predicted 30.1%, slope 0.78, Brier 0.151 |
 | Decision curve | unweighted LR beats treat-all and treat-none at every threshold 1-30%; class-weighted LR is below treat-none from 5% |
