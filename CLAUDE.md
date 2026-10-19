@@ -8,6 +8,7 @@ A CHD-prediction project on CDC NHANES 2013-2014 that became a data-leakage audi
 - `notebooks/nhanes_chd_audit_and_revalidation.ipynb` — audit + corrected models. Reads the **v1** artifacts in `data/` and writes `outputs/*.csv` (15 tables for Power BI).
 - `notebooks/preprocessing_v1_original.ipynb` — the original (v1) preprocessing with the one-to-many join; produced `data/selected_features_v1.csv`. Kept as history, do not fix.
 - `notebooks/baseline_v1_original.ipynb` — the original (leaky) modeling notebook. Do not "fix" it; it is kept as the "before".
+- `notebooks/external_validation.ipynb` — temporal external validation (trained once on 2013-2014, applied to 2015-2016 and 2017-March 2020) and pooled 2013-March 2020 survey analysis. Reads `data/processed/selected_features.csv`, `data/raw/demographic.csv` and `data/raw_xpt/`; writes 8 CSVs in `outputs/`, `docs/external_validation.png`, `docs/pooled_forest.png`. Independent post-course work, not part of the BIOL 485 project.
 - `analysis/svy_logistic.R` — OPTIONAL R cross-check of notebook sections 12-13. Writes `outputs/svy_prevalence_crosscheck.csv`, `outputs/svy_odds_ratios_R.csv`. The main analysis is Python; R is not required.
 - `powerbi/` — `POWERBI_GUIDE.md` (three page specs), `measures.dax`, `theme.json`.
 - `docs/` — TRIPOD methods, README figures.
@@ -17,7 +18,7 @@ A CHD-prediction project on CDC NHANES 2013-2014 that became a data-leakage audi
 - Do not report accuracy as a headline metric (4% prevalence). Report AUC, sensitivity, specificity.
 - The notebooks in this repo were already executed (outputs are embedded) and `outputs/` is populated; re-running should reproduce the same numbers.
 - Keep `data/selected_features_v1.csv`, `data/train_split_smote.csv`, `data/test_split.csv` untouched; the audit depends on them.
-- `data/raw/` and `data/processed/` are git-ignored. Never commit them.
+- `data/raw/`, `data/raw_xpt/`, `data/processed/` and `data/processed_v1/` are git-ignored. Never commit them.
 - Run notebooks with `jupyter nbconvert --to notebook --execute --inplace <nb>` from the repo root so relative paths resolve.
 - Python env: `pip install -r requirements.txt`. If `imbalanced-learn` is missing, install it; do not stub SMOTE.
 - Survey regression is implemented in numpy in section 13 (`svy_logit`). Do not replace it with statsmodels `GLM(freq_weights=...)` or sklearn `sample_weight` alone: point estimates would match but SEs would ignore strata/PSUs and be wrong.
@@ -37,3 +38,5 @@ A CHD-prediction project on CDC NHANES 2013-2014 that became a data-leakage audi
 - Survey-weighted logistic regression (section 13, MI m = 20): Age OR 3.59/SD (2.72–4.74), family history of diabetes 1.80 (1.39–2.34), total cholesterol 0.59/SD (0.41–0.86). Complete cases n = 4,760, 199 cases. Jackknife/sandwich SE ratio median 1.02. MI estimates can move in the second decimal across sklearn versions; complete-case estimates should not.
 - If the optional R script is run, its prevalence cross-check must pass its built-in tolerance (prevalence 1e-4, SE 5e-4, CI 2e-3).
 - v2 preprocessing: `selected_features.csv` has 10,175 rows (all participants), 5,751 with a label.
+- External validation (class-weighted LR, trained once on 2013-2014): internal CV AUC 0.859; external AUC 0.868 (2015-2016, 244 cases) and 0.857 (2017-2020, 423 cases). The notebook's built-in asserts must pass.
+- Pooled 2013-March 2020: 20,469 examined adults, 891 cases, 54 strata, design df 55 (2017-2020 has 24 strata, one with 3 PSUs); weighted prevalence 0.0384. MI odds ratios may move in the second decimal across sklearn versions.

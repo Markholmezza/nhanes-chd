@@ -40,9 +40,10 @@ Triglycerides were missing for 55.7% because NHANES measures them only in the mo
 | Missing-data sensitivity | AUC 0.857-0.860 across all five strategies |
 | U.S. adult CHD prevalence (weighted) | 3.6% (2.8-4.7%), about 8.3 million adults |
 | Survey-weighted adjusted ORs (MI) | age 3.59/SD (2.72-4.74); family history of diabetes 1.80 (1.39-2.34); HbA1c 1.30/SD (1.02-1.67); RDW 1.28/SD (1.08-1.51); triglycerides 1.34/SD (1.08-1.66); prior stroke 2.14 (1.02-4.49); total cholesterol 0.59/SD (0.41-0.86); diastolic BP 0.84/SD (0.74-0.95) |
+| Validation [10d, 12, 13] | temporal external validation, model trained once on 2013-2014 and applied unchanged: class-weighted LR AUC 0.868 (0.851-0.888) in 2015-2016 (5,693 / 244 events) and 0.857 (0.841-0.872) in 2017-March 2020 (9,204 / 423); unweighted LR observed/expected 1.01 and 0.92, calibration slope 0.99 and 0.99; an intercept update of -0.10 restores O/E = 1 in 2017-March 2020 |
 
 ## Limitations [18]
-Cross-sectional design with a self-reported lifetime outcome: predictors were measured after diagnosis, so treatment can reverse associations (lower cholesterol in people with CHD, consistent with statins). Internal validation only; NHANES 2015-2016 or 2017-2020 would provide temporal external validation. No PSO-ANN re-implementation.
+Cross-sectional design with a self-reported lifetime outcome: predictors were measured after diagnosis, so treatment can reverse associations (lower cholesterol in people with CHD, consistent with statins). Validation is temporal and within NHANES only (2015-2016 and 2017-March 2020); the model has not been tested in another population or for incident (future) CHD. No PSO-ANN re-implementation.
 
 ## Interpretation [19, 20]
 After removing duplicated participants, flexible models add nothing over logistic regression. The model ranks risk reasonably (AUC 0.86), but it identifies people who already have a CHD diagnosis rather than predicting future events, so it is a demonstration of method, not a screening tool.

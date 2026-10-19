@@ -38,6 +38,24 @@ Screening operating point (logistic regression, 5-fold out-of-fold): at a 0.40 t
 | Adjusted ORs, complete cases (`svyglm`) | max difference 0.0005 in OR and CI bounds | confirms the Python sandwich-variance implementation |
 | Adjusted ORs, multiple imputation (m = 20) | point estimates within 0.05 for 19 of 20 terms; every term has the same significance conclusion | imputation models differ (`mice` pmm/logreg vs `IterativeImputer`). Self-reported diabetes differs most (1.03 vs 1.13): it is collinear with HbA1c and glucose, whose imputations differ, and its CI is wide (≈0.5–2.1) |
 
+### Temporal external validation and pooled analysis (2013–March 2020)
+
+The models were trained once on 2013-2014 and applied unchanged to two later NHANES cycles, 2015-2016 and 2017-March 2020 (pre-pandemic), with identical cohort definitions ([`notebooks/external_validation.ipynb`](notebooks/external_validation.ipynb)).
+
+| Metric | 2013-14 internal CV | 2015-16 external | 2017-20 external |
+|---|---|---|---|
+| Adults / CHD cases | 5,751 / 232 | 5,693 / 244 | 9,204 / 423 |
+| AUC (95% CI), class-weighted LR | 0.859 (0.837–0.881) | 0.868 (0.851–0.888) | 0.857 (0.841–0.872) |
+| Observed / expected, unweighted LR | 0.99 | 1.01 | 0.92 |
+| Calibration slope, unweighted LR | 0.94 | 0.99 | 0.99 |
+| Sensitivity / specificity at 0.40, class-weighted LR | 0.86 / 0.72 | 0.89 / 0.70 | 0.92 / 0.63 |
+
+Measurement drift was real but did not drive the result: in 2017-March 2020 diastolic BP shifted by 0.43 SD when NHANES switched to an oscillometric device, and LDH by 0.96 SD (median 122 vs 154 IU/L), yet refitting without blood pressure changes external AUC by less than 0.001 in both cycles. Pooling all three cycles (20,469 examined adults, 891 CHD cases, design df 55) gives a survey-weighted U.S. adult CHD prevalence of 3.8% (95% CI 3.3–4.5%), and cycle-adjusted odds ratios of 3.59 (3.11–4.15) per SD for age, 2.33 (1.67–3.25) for prior stroke and 0.65 (0.54–0.79) per SD for total cholesterol.
+
+![External validation: discrimination and calibration by cycle](docs/external_validation.png)
+
+![Pooled survey-weighted odds ratios, 2013-March 2020](docs/pooled_forest.png)
+
 Methods are written up TRIPOD-style in [`docs/TRIPOD_methods.md`](docs/TRIPOD_methods.md).
 
 Other corrections: the feature labeled "blood-relative stroke" was actually `MCQ160F`, the participant's own stroke history; the decision threshold is now chosen for screening sensitivity instead of defaulting to 0.5; SMOTE, when used, is applied inside each fold.
@@ -53,10 +71,11 @@ notebooks/
                                            exports Power BI tables
   preprocessing_v1_original.ipynb          the original preprocessing (one-to-many join), kept to show where the duplicates came from
   baseline_v1_original.ipynb               the original modeling notebook, kept as the "before" for the audit
+  external_validation.ipynb                temporal external validation on 2015-2016 and 2017-March 2020; pooled survey analysis
 analysis/
   svy_logistic.R                           optional: re-runs sections 12-13 in R `survey` as an independent cross-check
-data/            raw NHANES files (git-ignored) and the v1 artifacts the audit reproduces   -> data/README.md
-outputs/         analytic tables (CSV) consumed by Power BI, written by the audit notebook
+data/            raw NHANES files (raw/ 2013-2014 CSVs, raw_xpt/ 2015-2020 XPT; both git-ignored) and the v1 artifacts the audit reproduces   -> data/README.md
+outputs/         analytic tables (CSV) consumed by Power BI, written by the audit and external-validation notebooks
 powerbi/         POWERBI_GUIDE.md (page layouts, visual specs), measures.dax, theme.json
 docs/            TRIPOD methods, figures
 ```
@@ -66,6 +85,8 @@ docs/            TRIPOD methods, figures
 [NHANES 2013-2014](https://wwwn.cdc.gov/nchs/nhanes/continuousnhanes/default.aspx?BeginYear=2013) (CDC National Center for Health Statistics), six public-use files joined on participant ID `SEQN`: demographics, diet, examination, laboratory, medications, questionnaire. Outcome: `MCQ160C`, "Has a doctor ever told you that you had coronary heart disease" (adults 20+). Features: the 19 variables of the replicated paper (sex, age, systolic/diastolic BP, total cholesterol, HDL, triglycerides, glucose, HbA1c, creatinine, uric acid, LDH, platelet count, RDW, vigorous/moderate work, diabetes, family history of diabetes, stroke history).
 
 Download the six CSVs into `data/raw/`. The analysis uses the Kaggle mirror "National Health and Nutrition Examination Survey", which repackages the official CDC files ([NHANES 2013-2014 data, documentation and codebooks](https://wwwn.cdc.gov/nchs/nhanes/continuousnhanes/default.aspx?BeginYear=2013)).
+
+For the external validation, download 10 modules per cycle as SAS transport (`.xpt`) files from the CDC data pages for [NHANES 2015-2016](https://wwwn.cdc.gov/nchs/nhanes/continuousnhanes/default.aspx?BeginYear=2015) (`_I` files, into `data/raw_xpt/2015-2016/`) and [NHANES 2017-March 2020 pre-pandemic](https://wwwn.cdc.gov/nchs/nhanes/continuousnhanes/default.aspx?Cycle=2017-2020) (`P_` files, into `data/raw_xpt/2017-2020/`): DEMO, BPX (2015-2016) or BPXO (2017-2020; only the oscillometric file exists), BIOPRO, HDL, TRIGLY, GHB, CBC, PAQ, DIQ, MCQ. File names follow `DEMO_I.xpt` and `P_DEMO.xpt`.
 
 ## Reproduce
 
@@ -95,12 +116,12 @@ Planned three-page report built from `outputs/`: (1) cohort and CHD prevalence b
 ## Limitations
 
 - Cross-sectional, self-reported outcome: labs were measured after diagnosis, so treatment effects (e.g. statins lowering cholesterol) can reverse apparent associations.
-- Internal validation only; a later NHANES cycle (2015-2016, 2017-2020) would be the natural external test set.
+- Temporal validation within NHANES only; the model has not been tested in another population or for incident (future) CHD.
 - The paper's PSO-ANN was not re-implemented; its reported 0.97 accuracy is not comparable to AUC at 4% prevalence.
 
 ## Author
 
-Ziang Zhang. This began as a team project for BIOL 485 at Emory University: I wrote the data pipeline and baseline models (v1), and teammates contributed later testing. The audit, revalidation, survey-weighted analysis and Power BI report were done independently after the course.
+Ziang Zhang. This began as a team project for BIOL 485 at Emory University: I wrote the data pipeline and baseline models (v1), and teammates contributed later testing. The audit, revalidation, survey-weighted analysis, temporal external validation and Power BI report were done independently after the course.
 
 ## Acknowledgments
 
