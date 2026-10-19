@@ -1,6 +1,6 @@
-# Coronary Heart Disease on NHANES 2013-2014: Data Audit and Model Revalidation
+# Coronary Heart Disease in NHANES 2013–2020: Data Audit, Model Revalidation and External Validation
 
-A replication of a published CHD-prediction model on CDC NHANES data that turned into a data-leakage audit. The original pipeline reported random-forest AUC 0.999; after fixing a one-to-many join and evaluating at the participant level, the honest number is 0.86, and plain logistic regression does just as well.
+A replication of a published CHD-prediction model on CDC NHANES data that turned into a data-leakage audit. The original pipeline reported random-forest AUC 0.999; after fixing a one-to-many join and evaluating at the participant level, the honest number is 0.86, and plain logistic regression does just as well. The corrected model was then validated on two later NHANES cycles (AUC 0.86–0.87 in every held-out cycle, calibration slope 0.98–1.00), and the survey-weighted analysis was extended to 2013–March 2020 (891 CHD cases).
 
 ![AUC before and after correction](docs/auc_before_after.png)
 
@@ -86,7 +86,7 @@ notebooks/
                                            exports Power BI tables
   preprocessing_v1_original.ipynb          the original preprocessing (one-to-many join), kept to show where the duplicates came from
   baseline_v1_original.ipynb               the original modeling notebook, kept as the "before" for the audit
-  external_validation.ipynb                temporal external validation on 2015-2016 and 2017-March 2020; pooled survey analysis
+  external_validation.ipynb                temporal external validation on 2015-2016 and 2017-March 2020, leave-one-cycle-out validation, final model; pooled survey analysis
 analysis/
   svy_logistic.R                           optional: re-runs sections 12-13 in R `survey` as an independent cross-check
 data/            raw NHANES files (raw/ 2013-2014 CSVs, raw_xpt/ 2015-2020 XPT; both git-ignored) and the v1 artifacts the audit reproduces   -> data/README.md
@@ -109,10 +109,11 @@ For the external validation, download 10 modules per cycle as SAS transport (`.x
 pip install -r requirements.txt
 jupyter nbconvert --to notebook --execute notebooks/data_preprocessing.ipynb            # -> data/processed/
 jupyter nbconvert --to notebook --execute notebooks/nhanes_chd_audit_and_revalidation.ipynb  # -> outputs/*.csv
+jupyter nbconvert --to notebook --execute notebooks/external_validation.ipynb  # needs data/raw_xpt/, see Data
 Rscript analysis/svy_logistic.R      # optional cross-check; needs install.packages(c("survey", "mice", "mitools"))
 ```
 
-The audit notebook reads the v1 artifacts (`data/selected_features_v1.csv`, `data/train_split_smote.csv`, `data/test_split.csv`, included) so the before/after comparison is reproducible; see `data/README.md`. Both notebooks are committed with their executed outputs.
+The audit notebook reads the v1 artifacts (`data/selected_features_v1.csv`, `data/train_split_smote.csv`, `data/test_split.csv`, included) so the before/after comparison is reproducible; see `data/README.md`. All notebooks are committed with their executed outputs.
 
 ## Power BI dashboard
 
@@ -136,7 +137,7 @@ Planned three-page report built from `outputs/`: (1) cohort and CHD prevalence b
 
 ## Author
 
-Ziang Zhang. This began as a team project for BIOL 485 at Emory University: I wrote the data pipeline and baseline models (v1), and teammates contributed later testing. The audit, revalidation, survey-weighted analysis, temporal external validation and Power BI report were done independently after the course.
+Ziang Zhang. This began as a team project for BIOL 485 at Emory University: I wrote the data pipeline and baseline models (v1), and teammates contributed later testing. The audit, revalidation, survey-weighted analysis and temporal external validation were done independently after the course.
 
 ## Acknowledgments
 
