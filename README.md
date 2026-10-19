@@ -56,6 +56,21 @@ Measurement drift was real but did not drive the result: in 2017-March 2020 dias
 
 ![Pooled survey-weighted odds ratios, 2013-March 2020](docs/pooled_forest.png)
 
+#### Leave-one-cycle-out validation
+
+Each cycle was held out once and scored by a model trained on the other two (internal-external cross-validation), so every participant is used for training and every cycle is an independent test once.
+
+| Held-out cycle | Trained on | AUC (95% CI), class-weighted LR | Calibration slope, unweighted LR |
+|---|---|---|---|
+| 2013-14 | 2015-16 + 2017-20 (667 cases) | 0.868 (0.846–0.887) | 0.98 |
+| 2015-16 | 2013-14 + 2017-20 (655 cases) | 0.872 (0.854–0.891) | 1.00 |
+| 2017-20 | 2013-14 + 2015-16 (476 cases) | 0.860 (0.844–0.875) | 0.98 |
+| Mean | | 0.867 | 0.99 |
+
+Training on two cycles instead of one raised AUC by 0.003–0.009 in every held-out cycle and gave calibration slopes of 0.98–1.00 (the clear slope gain is for 2013-14, 0.94 to 0.98), while calibration-in-the-large did not improve (observed/expected 0.90–1.04): more data mainly makes the model more stable, because discrimination is limited by the 19 predictors rather than by sample size. The recommended final model is the unweighted logistic regression refit on all three cycles (20,648 adults, 899 cases, 27 events per parameter), with coefficients in [`outputs/final_model_coefficients.csv`](outputs/final_model_coefficients.csv); its expected performance is the cross-validated estimate above.
+
+![Leave-one-cycle-out AUC, trained on 2013-2014 only vs on the other two cycles](docs/iecv.png)
+
 Methods are written up TRIPOD-style in [`docs/TRIPOD_methods.md`](docs/TRIPOD_methods.md).
 
 Other corrections: the feature labeled "blood-relative stroke" was actually `MCQ160F`, the participant's own stroke history; the decision threshold is now chosen for screening sensitivity instead of defaulting to 0.5; SMOTE, when used, is applied inside each fold.

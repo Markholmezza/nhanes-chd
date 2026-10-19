@@ -1,0 +1,7 @@
+HeldOut,Model,TrainCases_2013only,AUC_2013only,Slope_2013only,TrainCases_twoCycles,AUC_twoCycles,Slope_twoCycles,AUC_gain
+2013-2014,Logistic regression (unweighted),185.6,0.8604,0.938,667,0.8665,0.9809,0.0061
+2013-2014,Logistic regression (class-weighted),185.6,0.8589,0.775,667,0.8679,0.8532,0.009
+2015-2016,Logistic regression (unweighted),232.0,0.8685,0.9898,655,0.8716,0.9965,0.0031
+2015-2016,Logistic regression (class-weighted),232.0,0.8684,0.8285,655,0.872,0.8599,0.0036
+2017-2020,Logistic regression (unweighted),232.0,0.8563,0.9869,476,0.8588,0.9799,0.0025
+2017-2020,Logistic regression (class-weighted),232.0,0.8571,0.8179,476,0.86,0.836,0.003

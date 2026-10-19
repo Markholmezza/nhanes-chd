@@ -1,0 +1,35 @@
+Term,Coefficient,OddsRatio
+(Intercept),-1.033,0.3559
+Age,1.2212,3.3912
+Systolic,-0.0373,0.9633
+Diastolic,-0.1281,0.8797
+Platelet Count,-0.2387,0.7876
+Red-Cell Distribution Width,0.1347,1.1442
+Cholesterol,-0.2855,0.7517
+Creatinine,0.0113,1.0113
+Glucose,-0.0535,0.9479
+LDH,0.0482,1.0494
+Uric Acid,0.0613,1.0633
+Triglycerides,0.0738,1.0766
+HDL,-0.1547,0.8567
+Glycohemoglobin,0.095,1.0996
+Gender_Female,-0.7489,0.4729
+Gender_Male,-0.2361,0.7897
+Vigorous Work_1.0,-0.4557,0.634
+Vigorous Work_2.0,-0.4777,0.6202
+Vigorous Work_7.0,-0.0097,0.9904
+Vigorous Work_9.0,-0.0419,0.9589
+Moderate Work_1.0,-0.3425,0.71
+Moderate Work_2.0,-0.6134,0.5415
+Moderate Work_7.0,-0.0019,0.9981
+Moderate Work_9.0,-0.0273,0.9731
+Diabetes_1.0,-0.0868,0.9168
+Diabetes_2.0,-0.3612,0.6969
+Diabetes_3.0,-0.487,0.6145
+Diabetes_9.0,-0.0501,0.9512
+Blood-Rel Diabetes_1.0,-0.1014,0.9035
+Blood-Rel Diabetes_2.0,-0.5075,0.602
+Blood-Rel Diabetes_7.0,-0.0276,0.9728
+Blood-Rel Diabetes_9.0,-0.3485,0.7057
+StrokeHistory_No,-0.9823,0.3744
+StrokeHistory_Yes,-0.0027,0.9973
