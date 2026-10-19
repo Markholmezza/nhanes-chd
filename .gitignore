@@ -2,6 +2,8 @@
 data/raw/
 # Row-level processed files (regenerate with notebooks/data_preprocessing.ipynb)
 data/processed/
+# Output of notebooks/preprocessing_v1_original.ipynb (kept for the audit history)
+data/processed_v1/
 # Keep the small analytic tables in outputs/, ignore figures that notebooks regenerate
 outputs/*.png
 .ipynb_checkpoints/

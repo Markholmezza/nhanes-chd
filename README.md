@@ -16,7 +16,7 @@ A replication of a published CHD-prediction model on CDC NHANES data that turned
 | Logistic regression AUC | 0.822 | **0.859** (0.837–0.881) — ties RF; paired bootstrap difference +0.001 (−0.011 to +0.012) |
 | Accuracy as a metric | 0.996 (random forest) looked great | Misleading at 4% prevalence: RF reaches 0.948 accuracy while finding 15.5% of cases |
 
-Screening operating point (logistic regression, 5-fold out-of-fold): at a 0.40 threshold the model catches **86% of CHD cases at 72% specificity**, flagging 31% of adults (PPV 0.11). SMOTE applied correctly, inside each training fold, gives the same AUC as class weighting (0.856 vs 0.859 for LR; 0.840 vs 0.858 for RF) — the original 0.999 came from leakage, not from SMOTE. Strongest predictors (odds ratio per SD or per category, bootstrap 95% CI): age 3.7 (2.9–4.9), prior stroke 1.7 (1.1–2.4), total cholesterol 0.73 (0.57–0.88, consistent with statin treatment after diagnosis).
+Screening operating point (logistic regression, 5-fold out-of-fold): at a 0.40 threshold the model catches **86% of CHD cases at 72% specificity**, flagging 31% of adults (PPV 0.11). SMOTE applied correctly, inside each training fold, gives the same AUC as class weighting (0.856 vs 0.859 for LR; 0.840 vs 0.858 for RF) — the original 0.999 came from leakage, not from SMOTE.
 
 ### Biostatistical extensions
 
@@ -58,7 +58,7 @@ analysis/
 data/            raw NHANES files (git-ignored) and the v1 artifacts the audit reproduces   -> data/README.md
 outputs/         analytic tables (CSV) consumed by Power BI, written by the audit notebook
 powerbi/         POWERBI_GUIDE.md (page layouts, visual specs), measures.dax, theme.json
-docs/            PDF report, TRIPOD methods, figures
+docs/            TRIPOD methods, figures
 ```
 
 ## Data
@@ -80,7 +80,7 @@ The audit notebook reads the v1 artifacts (`data/selected_features_v1.csv`, `dat
 
 ## Power BI dashboard
 
-Three pages built from `outputs/`: (1) cohort and CHD prevalence by clinical risk group with sex/age slicers and a weighted/unweighted toggle; (2) the audit story — rows-to-participants funnel, leakage share, AUC before vs after with bootstrap error bars, an interactive decision-threshold explorer, and odds ratios; (3) U.S. population estimates with design-based CIs, calibration plot, decision curve and the missing-data sensitivity table. Build instructions, DAX measures and the theme are in [`powerbi/`](powerbi/POWERBI_GUIDE.md).
+Planned three-page report built from `outputs/`: (1) cohort and CHD prevalence by clinical risk group with sex/age slicers and a weighted/unweighted toggle; (2) the audit story — rows-to-participants funnel, leakage share, AUC before vs after with bootstrap error bars, an interactive decision-threshold explorer, and odds ratios; (3) U.S. population estimates with design-based CIs, calibration plot, decision curve and the missing-data sensitivity table. Build instructions, DAX measures and the theme are in [`powerbi/`](powerbi/POWERBI_GUIDE.md).
 
 ## Methods summary
 

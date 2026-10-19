@@ -10,7 +10,7 @@ A CHD-prediction project on CDC NHANES 2013-2014 that became a data-leakage audi
 - `notebooks/baseline_v1_original.ipynb` — the original (leaky) modeling notebook. Do not "fix" it; it is kept as the "before".
 - `analysis/svy_logistic.R` — OPTIONAL R cross-check of notebook sections 12-13. Writes `outputs/svy_prevalence_crosscheck.csv`, `outputs/svy_odds_ratios_R.csv`. The main analysis is Python; R is not required.
 - `powerbi/` — `POWERBI_GUIDE.md` (three page specs), `measures.dax`, `theme.json`.
-- `docs/` — PDF report, TRIPOD methods, README figures.
+- `docs/` — TRIPOD methods, README figures.
 
 ## Rules
 - Never reintroduce the bug: every merge on `SEQN` must end with `assert df["SEQN"].is_unique`. `medications.csv` is one row per prescription and must be collapsed before joining.
