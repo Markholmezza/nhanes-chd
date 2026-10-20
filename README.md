@@ -40,7 +40,7 @@
 | Random forest AUC | 0.999 | **0.858** (95% CI 0.835–0.879) |
 | KNN AUC | 0.987 | **0.748** (0.713–0.781) |
 | Logistic regression AUC | 0.822 | **0.859** (0.837–0.881) — ties RF; paired bootstrap difference +0.001 (−0.011 to +0.012) |
-| PSO-ANN (the paper's model) | accuracy 0.81 in v1 (row-level split; AUC not computed) | **0.836** (0.812–0.860) — 0.023 below LR (paired bootstrap 0.011 to 0.035) |
+| PSO-ANN (the paper's model) | accuracy 0.81 in v1, per the course project report (row-level split; AUC not computed) | **0.836** (0.812–0.860) — 0.023 below LR (paired bootstrap 0.011 to 0.035) |
 | Accuracy as a metric | 0.996 (random forest) looked great | Misleading at 4% prevalence: RF reaches 0.948 accuracy while finding 15.5% of cases |
 
 Screening operating point (logistic regression, 5-fold out-of-fold): at a 0.40 threshold the model catches **86% of CHD cases at 72% specificity**, flagging 31% of adults (PPV 0.11). SMOTE applied correctly, inside each training fold, gives the same AUC as class weighting (0.856 vs 0.859 for LR; 0.840 vs 0.858 for RF) — the original 0.999 came from leakage, not from SMOTE.
@@ -58,7 +58,7 @@ A care-management team rarely calls everyone; it has a fixed outreach capacity. 
 | 20% | 74% | 15% | 3.7× | 2,001 → 297 (81) |
 | 30% | 86% | 12% | 2.9× | 3,001 → 346 (121) |
 
-Calling the riskiest 10% reaches half of all cases, five times what the same number of random calls would; going from 10% to 30% of adults adds only another 36% of cases. The 30% row is essentially the 0.40-threshold operating point above. "Per 10,000" figures are scaled from the analytic sample (5,751 adults, unweighted prevalence 4.03%), not survey-weighted U.S. estimates. NHANES is cross-sectional and CHD is a self-reported past diagnosis, so this demonstrates a capacity-based decision framework, not a member-screening model ready to deploy.
+Calling the riskiest 10% reaches half of all cases, five times what the same number of random calls would; going from 10% to 30% of adults adds only another 36 percentage points of cases. The 30% row is essentially the 0.40-threshold operating point above. "Per 10,000" figures are scaled from the analytic sample (5,751 adults, unweighted prevalence 4.03%), not survey-weighted U.S. estimates. NHANES is cross-sectional and CHD is a self-reported past diagnosis, so this demonstrates a capacity-based decision framework, not a member-screening model ready to deploy.
 
 ### Biostatistical extensions
 
@@ -195,7 +195,7 @@ A public Publish-to-web link is not available because the university Power BI te
 
 - Cross-sectional, self-reported outcome: labs were measured after diagnosis, so treatment effects (e.g. statins lowering cholesterol) can reverse apparent associations.
 - Temporal validation within NHANES only; the model has not been tested in another population or for incident (future) CHD.
-- The paper's PSO-ANN was implemented in the course project (v1), but evaluated only on the leaky row-level split and only by accuracy (0.81; the paper reports 0.97); that v1 code is not in this repository. Re-evaluated in the corrected pipeline it reaches AUC 0.836, below logistic regression. Accuracy, whether 0.97 or 0.81, is not comparable to AUC at 4% prevalence, where predicting "no CHD" for everyone already scores 0.96.
+- The paper's PSO-ANN was implemented in the course project (v1) and reported only by accuracy on the leaky row-level split (0.81 in the BIOL 485 course project report; the paper reports 0.97). That v1 code was not preserved and is not in this repository; the re-evaluation here is a new implementation of the paper's settings. Re-evaluated on the corrected folds it reaches AUC 0.836, below logistic regression. Accuracy, whether 0.97 or 0.81, is not comparable to AUC at 4% prevalence, where predicting "no CHD" for everyone already scores 0.96.
 
 ## Author
 
