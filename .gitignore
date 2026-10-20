@@ -9,5 +9,5 @@ outputs/*.png
 .ipynb_checkpoints/
 __pycache__/
 .DS_Store
-# NHANES 2015-2016 / 2017-2020 XPT files for temporal external validation (download from CDC)
+# NHANES 2015-2016 / 2017-2020 XPT files for temporal validation (download from CDC)
 data/raw_xpt/

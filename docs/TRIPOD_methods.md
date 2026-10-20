@@ -1,9 +1,9 @@
 # Methods (TRIPOD-style summary)
 
-Prediction model development with internal validation, reported along the TRIPOD checklist (Collins et al., 2015). Item numbers in brackets.
+Prediction model development with internal and temporal validation, reported along the TRIPOD checklist (Collins et al., 2015). Item numbers in brackets.
 
 ## Source of data [4a, 4b]
-CDC National Health and Nutrition Examination Survey (NHANES) 2013-2014, a cross-sectional, stratified multistage probability sample of the U.S. civilian non-institutionalized population. Six public-use files were joined on the participant identifier `SEQN`: demographics, dietary, examination, laboratory, medications, questionnaire. One row per participant; the medications file (one row per prescription) was collapsed to a per-participant count before joining, and uniqueness of `SEQN` was asserted after every merge.
+CDC National Health and Nutrition Examination Survey (NHANES) 2013-2014, a cross-sectional, stratified multistage probability sample of the U.S. civilian non-institutionalized population. Six public-use files were joined on the participant identifier `SEQN`: demographics, dietary, examination, laboratory, medications, questionnaire. One row per participant; the medications file (one row per prescription) was collapsed to a per-participant count before joining, and uniqueness of `SEQN` was asserted after every merge. Temporal validation used the 2015-2016 and 2017-March 2020 (pre-pandemic) cycles, built from the CDC XPT files with identical variable definitions. The later cycles come from the same survey (same sampling frame and protocols), so this is temporal validation rather than validation in an independent population.
 
 ## Participants [5a-c]
 Adults aged 20-80 who answered the coronary heart disease question (n = 5,751 of 10,175 participants). No other exclusions. 179 of them were interviewed but not examined (exam weight 0); they are kept in the prediction models (labs imputed) and drop out of survey-weighted estimates.
@@ -38,9 +38,9 @@ Triglycerides were missing for 55.7% because NHANES measures them only in the mo
 | Calibration, class-weighted LR | mean predicted 30.1%, slope 0.78, Brier 0.151 |
 | Decision curve | unweighted LR beats treat-all and treat-none at every threshold 1-30%; class-weighted LR is below treat-none from 5% |
 | Missing-data sensitivity | AUC 0.857-0.860 across all five strategies |
-| U.S. adult CHD prevalence (weighted) | 3.6% (2.8-4.7%), about 8.3 million adults |
+| U.S. adult CHD prevalence (weighted) | 3.7% (2.8-4.7%), about 8.3 million adults |
 | Survey-weighted adjusted ORs (MI) | age 3.59/SD (2.72-4.74); family history of diabetes 1.80 (1.39-2.34); HbA1c 1.30/SD (1.02-1.67); RDW 1.28/SD (1.08-1.51); triglycerides 1.34/SD (1.08-1.66); prior stroke 2.14 (1.02-4.49); total cholesterol 0.59/SD (0.41-0.86); diastolic BP 0.84/SD (0.74-0.95) |
-| Validation [10d, 12, 13] | temporal external validation, model trained once on 2013-2014 and applied unchanged: class-weighted LR AUC 0.868 (0.851-0.888) in 2015-2016 (5,693 / 244 events) and 0.857 (0.841-0.872) in 2017-March 2020 (9,204 / 423); unweighted LR observed/expected 1.01 and 0.92, calibration slope 0.99 and 0.99; an intercept update of -0.10 restores O/E = 1 in 2017-March 2020 |
+| Validation [10d, 12, 13] | temporal validation, model trained once on 2013-2014 and applied unchanged: class-weighted LR AUC 0.868 (0.851-0.888) in 2015-2016 (5,693 / 244 events) and 0.857 (0.841-0.872) in 2017-March 2020 (9,204 / 423); unweighted LR observed/expected 1.01 and 0.92, calibration slope 0.99 and 0.99; an intercept update of -0.10 restores O/E = 1 in 2017-March 2020 |
 | Internal-external cross-validation | leave one cycle out, class-weighted LR AUC 0.868 (0.846-0.887) with 2013-2014 held out, 0.872 (0.854-0.891) with 2015-2016 held out, 0.860 (0.844-0.875) with 2017-March 2020 held out (mean 0.867); unweighted LR calibration slope 0.98-1.00; final model refit on all three cycles (20,648 adults, 899 events) |
 
 ## Limitations [18]

@@ -1,8 +1,30 @@
-# Coronary Heart Disease in NHANES 2013–2020: Data Audit, Model Revalidation and External Validation
+# Coronary Heart Disease in NHANES 2013–2020: Data Audit, Model Revalidation and Temporal Validation
 
 A replication of a published CHD-prediction model on CDC NHANES data that turned into a data-leakage audit. The original pipeline reported random-forest AUC 0.999; after fixing a one-to-many join and evaluating at the participant level, the honest number is 0.86, and plain logistic regression does just as well. The corrected model was then validated on two later NHANES cycles (AUC 0.86–0.87 in every held-out cycle, calibration slope 0.98–1.00), and the survey-weighted analysis was extended to 2013–March 2020 (891 CHD cases).
 
 ![AUC before and after correction](docs/auc_before_after.png)
+
+## Headline numbers
+
+| Audit (NHANES 2013-2014) | |
+|---|---|
+| Participants | 10,175 |
+| Adults with a CHD answer | 5,751, of whom 232 have CHD (4.0%) |
+| Labeled rows in the original merge | 15,103 (2.63 per person) |
+| Original test rows with a copy in the training set | 75.4% |
+| Random forest AUC, original → corrected | 0.999 → 0.858 |
+| Logistic regression AUC, corrected | 0.859 (0.837–0.881) |
+| Threshold 0.40, logistic regression | sensitivity 86%, specificity 72%, 31% flagged |
+| Survey-weighted CHD prevalence, 2013-2014 | 3.7% (2.8–4.7%) |
+
+| Population and validation (2013–March 2020) | |
+|---|---|
+| Examined adults with a CHD answer | 20,469, of whom 891 have CHD¹ |
+| Pooled survey-weighted CHD prevalence | 3.8% (3.3–4.5%); by cycle 3.7%, 3.5%, 4.2% |
+| Temporal validation AUC, class-weighted logistic regression trained on 2013-2014 | 0.868 (0.851–0.888) in 2015-2016, 0.857 (0.841–0.872) in 2017-March 2020 |
+| Leave-one-cycle-out | AUC 0.86–0.87, calibration slope 0.98–1.00 |
+
+¹ The final model refit on all cycles uses 20,648 adults / 899 events because it also includes interviewed-but-not-examined adults, who have no exam weight.
 
 ## Key findings
 
@@ -25,7 +47,7 @@ Screening operating point (logistic regression, 5-fold out-of-fold): at a 0.40 t
 | Are the predicted risks believable? | Decile calibration curve, calibration slope, Brier score | Class weighting inflates mean predicted risk to 30% (observed 4%). The **unweighted** LR is calibrated: 4.05% vs 4.03%, slope 0.94, Brier 0.035 (no-skill 0.039) |
 | Is the model worth using? | Decision curve analysis | Calibrated LR beats treat-all and treat-none at every threshold 1–30%; the class-weighted model does worse than treating no one above 5% |
 | Does missing-data handling matter? | Mean, missing indicators, MICE, drop triglycerides, complete cases (all inside folds) | AUC 0.857–0.860 throughout; triglycerides are missing by design (fasting subsample) |
-| What is the U.S. prevalence? | Survey weights (`WTMEC2YR`), 15 strata × 2 PSUs, domain estimation, Taylor linearization, logit CIs; verified against a stratified jackknife | **3.6% (95% CI 2.8–4.7%) ≈ 8.3 million adults**; 10.7% at 60+, 11.6% with diabetes, 19.4% after a stroke; design effects ≈ 2–3 |
+| What is the U.S. prevalence? | Survey weights (`WTMEC2YR`), 15 strata × 2 PSUs, domain estimation, Taylor linearization, logit CIs; verified against a stratified jackknife | **3.7% (95% CI 2.8–4.7%) ≈ 8.3 million adults**; 10.7% at 60+, 11.6% with diabetes, 19.4% after a stroke; design effects ≈ 2–3 |
 | Which factors are associated with CHD in the population? | Survey-weighted logistic regression (design-based sandwich SEs, the `svyglm` estimator) with multiple imputation (m = 20, Rubin's rules, Barnard-Rubin df); SEs verified against a 30-replicate jackknife | Age OR 3.59 per SD (2.72–4.74), family history of diabetes 1.80 (1.39–2.34), HbA1c 1.30/SD, RDW 1.28/SD; total cholesterol 0.59/SD (0.41–0.86), an inverse association consistent with statin treatment after diagnosis |
 
 ![Survey-weighted odds ratios](docs/svy_forest.png)
@@ -38,11 +60,11 @@ Screening operating point (logistic regression, 5-fold out-of-fold): at a 0.40 t
 | Adjusted ORs, complete cases (`svyglm`) | max difference 0.0005 in OR and CI bounds | confirms the Python sandwich-variance implementation |
 | Adjusted ORs, multiple imputation (m = 20) | point estimates within 0.05 for 19 of 20 terms; every term has the same significance conclusion | imputation models differ (`mice` pmm/logreg vs `IterativeImputer`). Self-reported diabetes differs most (1.03 vs 1.13): it is collinear with HbA1c and glucose, whose imputations differ, and its CI is wide (≈0.5–2.1) |
 
-### Temporal external validation and pooled analysis (2013–March 2020)
+### Temporal validation and pooled analysis (2013–March 2020)
 
-The models were trained once on 2013-2014 and applied unchanged to two later NHANES cycles, 2015-2016 and 2017-March 2020 (pre-pandemic), with identical cohort definitions ([`notebooks/external_validation.ipynb`](notebooks/external_validation.ipynb)).
+The models were trained once on 2013-2014 and applied unchanged to two later NHANES cycles, 2015-2016 and 2017-March 2020 (pre-pandemic), with identical cohort definitions ([`notebooks/external_validation.ipynb`](notebooks/external_validation.ipynb)). The later cycles come from the same survey (same sampling frame and protocols), so this is temporal validation rather than validation in an independent population.
 
-| Metric | 2013-14 internal CV | 2015-16 external | 2017-20 external |
+| Metric | 2013-14 internal CV | 2015-16 temporal | 2017-20 temporal |
 |---|---|---|---|
 | Adults / CHD cases | 5,751 / 232 | 5,693 / 244 | 9,204 / 423 |
 | AUC (95% CI), class-weighted LR | 0.859 (0.837–0.881) | 0.868 (0.851–0.888) | 0.857 (0.841–0.872) |
@@ -50,9 +72,9 @@ The models were trained once on 2013-2014 and applied unchanged to two later NHA
 | Calibration slope, unweighted LR | 0.94 | 0.99 | 0.99 |
 | Sensitivity / specificity at 0.40, class-weighted LR | 0.86 / 0.72 | 0.89 / 0.70 | 0.92 / 0.63 |
 
-Measurement drift was real but did not drive the result: in 2017-March 2020 diastolic BP shifted by 0.43 SD when NHANES switched to an oscillometric device, and LDH by 0.96 SD (median 122 vs 154 IU/L), yet refitting without blood pressure changes external AUC by less than 0.001 in both cycles. Pooling all three cycles (20,469 examined adults, 891 CHD cases, design df 55) gives a survey-weighted U.S. adult CHD prevalence of 3.8% (95% CI 3.3–4.5%), and cycle-adjusted odds ratios of 3.59 (3.11–4.15) per SD for age, 2.33 (1.67–3.25) for prior stroke and 0.65 (0.54–0.79) per SD for total cholesterol.
+Measurement drift was real but did not drive the result: in 2017-March 2020 diastolic BP shifted by 0.43 SD when NHANES switched to an oscillometric device, and LDH by 0.96 SD (median 122 vs 154 IU/L), yet refitting without blood pressure changes temporal-validation AUC by less than 0.001 in both cycles. Pooling all three cycles (20,469 examined adults, 891 CHD cases, design df 55) gives a survey-weighted U.S. adult CHD prevalence of 3.8% (95% CI 3.3–4.5%), and cycle-adjusted odds ratios of 3.59 (3.11–4.15) per SD for age, 2.33 (1.67–3.25) for prior stroke and 0.65 (0.54–0.79) per SD for total cholesterol. Cycles were pooled following NCHS guidance: exam weights WTMEC2YR (2013-2014, 2015-2016) and WTMECPRP (2017-March 2020) were multiplied by 2/7.2, 2/7.2 and 3.2/7.2; strata (SDMVSTRA) do not overlap across cycles (54 strata, design df 55).
 
-![External validation: discrimination and calibration by cycle](docs/external_validation.png)
+![Temporal validation: discrimination and calibration by cycle](docs/external_validation.png)
 
 ![Pooled survey-weighted odds ratios, 2013-March 2020](docs/pooled_forest.png)
 
@@ -86,11 +108,11 @@ notebooks/
                                            exports Power BI tables
   preprocessing_v1_original.ipynb          the original preprocessing (one-to-many join), kept to show where the duplicates came from
   baseline_v1_original.ipynb               the original modeling notebook, kept as the "before" for the audit
-  external_validation.ipynb                temporal external validation on 2015-2016 and 2017-March 2020, leave-one-cycle-out validation, final model; pooled survey analysis
+  external_validation.ipynb                temporal validation on 2015-2016 and 2017-March 2020, leave-one-cycle-out validation, final model; pooled survey analysis
 analysis/
   svy_logistic.R                           optional: re-runs sections 12-13 in R `survey` as an independent cross-check
 data/            raw NHANES files (raw/ 2013-2014 CSVs, raw_xpt/ 2015-2020 XPT; both git-ignored) and the v1 artifacts the audit reproduces   -> data/README.md
-outputs/         analytic tables (CSV) consumed by Power BI, written by the audit and external-validation notebooks
+outputs/         analytic tables (CSV) consumed by Power BI, written by the audit and temporal-validation notebooks
 powerbi/         POWERBI_GUIDE.md (page layouts, visual specs), measures.dax, theme.json
 docs/            TRIPOD methods, figures
 ```
@@ -101,7 +123,7 @@ docs/            TRIPOD methods, figures
 
 Download the six CSVs into `data/raw/`. The analysis uses the Kaggle mirror "National Health and Nutrition Examination Survey", which repackages the official CDC files ([NHANES 2013-2014 data, documentation and codebooks](https://wwwn.cdc.gov/nchs/nhanes/continuousnhanes/default.aspx?BeginYear=2013)).
 
-For the external validation, download 10 modules per cycle as SAS transport (`.xpt`) files from the CDC data pages for [NHANES 2015-2016](https://wwwn.cdc.gov/nchs/nhanes/continuousnhanes/default.aspx?BeginYear=2015) (`_I` files, into `data/raw_xpt/2015-2016/`) and [NHANES 2017-March 2020 pre-pandemic](https://wwwn.cdc.gov/nchs/nhanes/continuousnhanes/default.aspx?Cycle=2017-2020) (`P_` files, into `data/raw_xpt/2017-2020/`): DEMO, BPX (2015-2016) or BPXO (2017-2020; only the oscillometric file exists), BIOPRO, HDL, TRIGLY, GHB, CBC, PAQ, DIQ, MCQ. File names follow `DEMO_I.xpt` and `P_DEMO.xpt`.
+For the temporal validation, download 10 modules per cycle as SAS transport (`.xpt`) files from the CDC data pages for [NHANES 2015-2016](https://wwwn.cdc.gov/nchs/nhanes/continuousnhanes/default.aspx?BeginYear=2015) (`_I` files, into `data/raw_xpt/2015-2016/`) and [NHANES 2017-March 2020 pre-pandemic](https://wwwn.cdc.gov/nchs/nhanes/continuousnhanes/default.aspx?Cycle=2017-2020) (`P_` files, into `data/raw_xpt/2017-2020/`): DEMO, BPX (2015-2016) or BPXO (2017-2020; only the oscillometric file exists), BIOPRO, HDL, TRIGLY, GHB, CBC, PAQ, DIQ, MCQ. File names follow `DEMO_I.xpt` and `P_DEMO.xpt`.
 
 ## Reproduce
 
@@ -137,7 +159,7 @@ Planned three-page report built from `outputs/`: (1) cohort and CHD prevalence b
 
 ## Author
 
-Ziang Zhang. This began as a team project for BIOL 485 at Emory University: I wrote the data pipeline and baseline models (v1), and teammates contributed later testing. The audit, revalidation, survey-weighted analysis and temporal external validation were done independently after the course.
+Ziang Zhang. This began as a team project for BIOL 485 at Emory University: I wrote the data pipeline and baseline models (v1), and teammates contributed later testing. The audit, revalidation, survey-weighted analysis and temporal validation were done independently after the course.
 
 ## Acknowledgments
 
