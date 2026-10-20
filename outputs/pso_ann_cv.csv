@@ -1,0 +1,6 @@
+Model,AUC,CI_low,CI_high,LR_minus_model,Diff_CI_low,Diff_CI_high,CalibrationSlope,Brier,MeanPredicted,Sensitivity@0.40,Specificity@0.40
+Logistic regression (class-weighted),0.8589,0.8367,0.8811,,,,0.775,0.1506,0.3008,0.8621,0.7168
+Logistic regression (unweighted),0.8604,0.8376,0.8822,-0.0014,-0.0052,0.0023,0.938,0.0352,0.0405,,
+PSO-ANN (class-weighted),0.8361,0.8115,0.8601,0.023,0.0109,0.035,0.6975,0.1501,0.2681,0.819,0.7369
+PSO-ANN (unweighted),0.8362,0.8109,0.8602,0.0229,0.011,0.0358,0.743,0.0366,0.0412,,
+PSO-ANN (SMOTE inside each fold),0.8032,0.7775,0.8292,0.0558,0.0392,0.0718,0.4055,0.1276,0.2059,0.6509,0.8036

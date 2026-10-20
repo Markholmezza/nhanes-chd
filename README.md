@@ -40,9 +40,12 @@
 | Random forest AUC | 0.999 | **0.858** (95% CI 0.835–0.879) |
 | KNN AUC | 0.987 | **0.748** (0.713–0.781) |
 | Logistic regression AUC | 0.822 | **0.859** (0.837–0.881) — ties RF; paired bootstrap difference +0.001 (−0.011 to +0.012) |
+| PSO-ANN (the paper's model) | accuracy 0.81 in v1 (row-level split; AUC not computed) | **0.836** (0.812–0.860) — 0.023 below LR (paired bootstrap 0.011 to 0.035) |
 | Accuracy as a metric | 0.996 (random forest) looked great | Misleading at 4% prevalence: RF reaches 0.948 accuracy while finding 15.5% of cases |
 
 Screening operating point (logistic regression, 5-fold out-of-fold): at a 0.40 threshold the model catches **86% of CHD cases at 72% specificity**, flagging 31% of adults (PPV 0.11). SMOTE applied correctly, inside each training fold, gives the same AUC as class weighting (0.856 vs 0.859 for LR; 0.840 vs 0.858 for RF) — the original 0.999 came from leakage, not from SMOTE.
+
+**PSO-ANN re-evaluated** ([`notebooks/pso_ann_revalidation.ipynb`](notebooks/pso_ann_revalidation.ipynb)): the paper's network (5 hidden neurons, weights initialized by particle swarm optimization with 30 particles × 100 iterations, then backpropagation) on the same folds, preprocessing and 19 predictors, with no tuning. Class-weighted it reaches AUC 0.836, below logistic regression in all five random seeds tried (0.834–0.851). The unweighted network averages the right risk (4.12% vs 4.03%) but its predictions are too extreme (calibration slope 0.74, Brier 0.0366 vs 0.0352 for unweighted LR). With SMOTE inside each fold, as in v1 but without the leakage, AUC is 0.803 (0.778–0.829), calibration slope 0.41. In short, under the paper's specification and without tuning, PSO-ANN (AUC 0.836) did not match logistic regression (0.859); backpropagation added little after PSO initialization and the network trained on 80% of each fold, so this does not show that neural networks cannot help with these predictors.
 
 ### Biostatistical extensions
 
@@ -113,6 +116,7 @@ notebooks/
   preprocessing_v1_original.ipynb          the original preprocessing (one-to-many join), kept to show where the duplicates came from
   baseline_v1_original.ipynb               the original modeling notebook, kept as the "before" for the audit
   external_validation.ipynb                temporal validation on 2015-2016 and 2017-March 2020, leave-one-cycle-out validation, final model; pooled survey analysis
+  pso_ann_revalidation.ipynb               the paper's PSO-ANN re-evaluated on the corrected folds (class-weighted, unweighted, SMOTE in fold)
 analysis/
   svy_logistic.R                           optional: re-runs sections 12-13 in R `survey` as an independent cross-check
 data/            raw NHANES files (raw/ 2013-2014 CSVs, raw_xpt/ 2015-2020 XPT; both git-ignored) and the v1 artifacts the audit reproduces   -> data/README.md
@@ -136,6 +140,7 @@ pip install -r requirements.txt
 jupyter nbconvert --to notebook --execute notebooks/data_preprocessing.ipynb            # -> data/processed/
 jupyter nbconvert --to notebook --execute notebooks/nhanes_chd_audit_and_revalidation.ipynb  # -> outputs/*.csv
 jupyter nbconvert --to notebook --execute notebooks/external_validation.ipynb  # needs data/raw_xpt/, see Data
+jupyter nbconvert --to notebook --execute notebooks/pso_ann_revalidation.ipynb  # about 2 minutes
 Rscript analysis/svy_logistic.R      # optional cross-check; needs install.packages(c("survey", "mice", "mitools"))
 ```
 
@@ -175,7 +180,7 @@ A public Publish-to-web link is not available because the university Power BI te
 
 - Cross-sectional, self-reported outcome: labs were measured after diagnosis, so treatment effects (e.g. statins lowering cholesterol) can reverse apparent associations.
 - Temporal validation within NHANES only; the model has not been tested in another population or for incident (future) CHD.
-- The paper's PSO-ANN was not re-implemented; its reported 0.97 accuracy is not comparable to AUC at 4% prevalence.
+- The paper's PSO-ANN was implemented in the course project (v1), but evaluated only on the leaky row-level split and only by accuracy (0.81; the paper reports 0.97); that v1 code is not in this repository. Re-evaluated in the corrected pipeline it reaches AUC 0.836, below logistic regression. Accuracy, whether 0.97 or 0.81, is not comparable to AUC at 4% prevalence, where predicting "no CHD" for everyone already scores 0.96.
 
 ## Author
 

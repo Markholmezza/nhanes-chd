@@ -9,6 +9,7 @@ A CHD-prediction project on CDC NHANES 2013-2014 that became a data-leakage audi
 - `notebooks/preprocessing_v1_original.ipynb` — the original (v1) preprocessing with the one-to-many join; produced `data/selected_features_v1.csv`. Kept as history, do not fix.
 - `notebooks/baseline_v1_original.ipynb` — the original (leaky) modeling notebook. Do not "fix" it; it is kept as the "before".
 - `notebooks/external_validation.ipynb` — temporal validation (trained once on 2013-2014, applied to 2015-2016 and 2017-March 2020) and pooled 2013-March 2020 survey analysis. Reads `data/processed/selected_features.csv`, `data/raw/demographic.csv` and `data/raw_xpt/`; writes 8 CSVs in `outputs/`, `docs/external_validation.png`, `docs/pooled_forest.png`. Independent post-course work, not part of the BIOL 485 project. The later cycles come from the same survey (same sampling frame and protocols), so this is temporal validation rather than validation in an independent population. Call it temporal validation, not external validation.
+- `notebooks/pso_ann_revalidation.ipynb` — the paper's PSO-ANN (5 hidden neurons, PSO 30 particles x 100 iterations, then backprop) on the audit notebook's folds and preprocessing; class-weighted (main), unweighted, SMOTE in fold. Writes `outputs/pso_ann_cv.csv`, `outputs/pso_ann_seeds.csv`. The v1 PSO-ANN code is not in the repo; if found, add it unchanged as `notebooks/pso_ann_v1_original.ipynb`.
 - `analysis/svy_logistic.R` — OPTIONAL R cross-check of notebook sections 12-13. Writes `outputs/svy_prevalence_crosscheck.csv`, `outputs/svy_odds_ratios_R.csv`. The main analysis is Python; R is not required.
 - `powerbi/` — `NHANES_CHD_Report.pbix` (finished 3-page report, data imported from `pbi_inputs.xlsx`), `POWERBI_GUIDE.md` (three page specs), `measures.dax`, `theme.json`.
 - `docs/` — TRIPOD methods, README figures.
@@ -31,6 +32,7 @@ A CHD-prediction project on CDC NHANES 2013-2014 that became a data-leakage audi
 - Threshold for ≥85% sensitivity (LR): 0.40 → sensitivity 0.86, specificity 0.72, 31% flagged.
 - SMOTE inside fold vs class weights: LR 0.856 vs 0.859; RF 0.840 vs 0.858. SMOTE comes from the real `imbalanced-learn` package (`imblearn.pipeline.Pipeline`, verified with 0.14.2); the numbers may differ in the third decimal between imbalanced-learn versions.
 - Top odds ratio: Age 3.67 per SD.
+- PSO-ANN (`outputs/pso_ann_cv.csv`): class-weighted AUC 0.836 (0.812-0.860), LR minus PSO-ANN +0.023 (0.011-0.035); unweighted AUC 0.836, slope 0.74, Brier 0.0366; SMOTE in fold AUC 0.803, slope 0.41. Five seeds (`pso_ann_seeds.csv`): class-weighted 0.834-0.851. Both new notebooks first assert that LR reproduces `outputs/auc_bootstrap_ci.csv` (0.859, 0.837-0.881); the PSO notebook asserts AUC < 0.90.
 - Calibration (unweighted LR): mean predicted 0.0405 vs observed 0.0403, slope 0.94, Brier 0.0352. Class-weighted LR: mean predicted 0.30, Brier 0.151.
 - Decision curve: unweighted LR beats treat-all/none at every threshold 0.01–0.30; class-weighted LR negative from 0.05.
 - Missing-data sensitivity: all five strategies AUC 0.857–0.860; complete cases n = 2,335, 97 cases.
