@@ -1,8 +1,10 @@
 # Coronary Heart Disease in NHANES 2013–2020: Data Audit, Model Revalidation and Temporal Validation
 
-A replication of a published CHD-prediction model on CDC NHANES data that turned into a data-leakage audit. The original pipeline reported random-forest AUC 0.999; after fixing a one-to-many join and evaluating at the participant level, the honest number is 0.86, and plain logistic regression does just as well. The corrected model was then validated on two later NHANES cycles (AUC 0.86–0.87 in every held-out cycle, calibration slope 0.98–1.00), and the survey-weighted analysis was extended to 2013–March 2020 (891 CHD cases).
+**End-to-end analysis of CDC NHANES 2013–2020 (20,469 adults) in Python, R and Power BI. In Python (pandas, scikit-learn) I found and fixed a data-leakage bug that had inflated a heart-disease model's AUC from 0.86 to 0.999, then validated the corrected model across three survey cycles. I implemented survey-weighted, design-based estimation in numpy (cross-checked against R `survey`) to estimate U.S. adult CHD prevalence at 3.8% (95% CI 3.3–4.5%), and built a 3-page interactive Power BI report with DAX measures and a what-if threshold slider.**
 
-![AUC before and after correction](docs/auc_before_after.png)
+[Headline numbers](#headline-numbers) · [Power BI report](#power-bi-report) · [Methods](docs/TRIPOD_methods.md)
+
+![Power BI report: decision-threshold slider](docs/powerbi_threshold.gif)
 
 ## Headline numbers
 
@@ -25,6 +27,8 @@ A replication of a published CHD-prediction model on CDC NHANES data that turned
 | Leave-one-cycle-out | AUC 0.86–0.87, calibration slope 0.98–1.00 |
 
 ¹ The final model refit on all cycles uses 20,648 adults / 899 events because it also includes interviewed-but-not-examined adults, who have no exam weight.
+
+![AUC before and after correction](docs/auc_before_after.png)
 
 ## Key findings
 
