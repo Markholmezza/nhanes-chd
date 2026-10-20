@@ -113,7 +113,7 @@ analysis/
   svy_logistic.R                           optional: re-runs sections 12-13 in R `survey` as an independent cross-check
 data/            raw NHANES files (raw/ 2013-2014 CSVs, raw_xpt/ 2015-2020 XPT; both git-ignored) and the v1 artifacts the audit reproduces   -> data/README.md
 outputs/         analytic tables (CSV) consumed by Power BI, written by the audit and temporal-validation notebooks
-powerbi/         NHANES_CHD_Report.pbix (3-page report), pbi_inputs.xlsx (its data), POWERBI_GUIDE.md, measures.dax, theme.json
+powerbi/         NHANES_CHD_Report.pbix (3-page report), NHANES_CHD_Report.pdf (PDF export), pbi_inputs.xlsx (its data), POWERBI_GUIDE.md, measures.dax, theme.json
 docs/            TRIPOD methods, README figures, Power BI screenshots (powerbi_page1-3.png) and threshold-slider GIF
 ```
 
@@ -155,7 +155,7 @@ Drag the decision-threshold slider: sensitivity, specificity and the share of ad
 ![Power BI page 2: data audit](docs/powerbi_page2.png)
 ![Power BI page 3: model validation](docs/powerbi_page3.png)
 
-A public Publish-to-web link is not available because the university Power BI tenant disables it; the screenshots, GIF and .pbix are the reference. Page specs are in [`powerbi/POWERBI_GUIDE.md`](powerbi/POWERBI_GUIDE.md); DAX in [`powerbi/measures.dax`](powerbi/measures.dax).
+A public Publish-to-web link is not available because the university Power BI tenant disables it; the screenshots, GIF, .pbix and a PDF export of all three pages ([`powerbi/NHANES_CHD_Report.pdf`](powerbi/NHANES_CHD_Report.pdf)) are the reference. Page specs are in [`powerbi/POWERBI_GUIDE.md`](powerbi/POWERBI_GUIDE.md); DAX in [`powerbi/measures.dax`](powerbi/measures.dax).
 
 ## Methods summary
 
