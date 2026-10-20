@@ -10,7 +10,7 @@ A CHD-prediction project on CDC NHANES 2013-2014 that became a data-leakage audi
 - `notebooks/baseline_v1_original.ipynb` — the original (leaky) modeling notebook. Do not "fix" it; it is kept as the "before".
 - `notebooks/external_validation.ipynb` — temporal validation (trained once on 2013-2014, applied to 2015-2016 and 2017-March 2020) and pooled 2013-March 2020 survey analysis. Reads `data/processed/selected_features.csv`, `data/raw/demographic.csv` and `data/raw_xpt/`; writes 8 CSVs in `outputs/`, `docs/external_validation.png`, `docs/pooled_forest.png`. Independent post-course work, not part of the BIOL 485 project. The later cycles come from the same survey (same sampling frame and protocols), so this is temporal validation rather than validation in an independent population. Call it temporal validation, not external validation.
 - `analysis/svy_logistic.R` — OPTIONAL R cross-check of notebook sections 12-13. Writes `outputs/svy_prevalence_crosscheck.csv`, `outputs/svy_odds_ratios_R.csv`. The main analysis is Python; R is not required.
-- `powerbi/` — `POWERBI_GUIDE.md` (three page specs), `measures.dax`, `theme.json`.
+- `powerbi/` — `NHANES_CHD_Report.pbix` (finished 3-page report, data imported from `pbi_inputs.xlsx`), `POWERBI_GUIDE.md` (three page specs), `measures.dax`, `theme.json`.
 - `docs/` — TRIPOD methods, README figures.
 
 ## Rules

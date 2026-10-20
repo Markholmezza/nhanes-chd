@@ -191,3 +191,104 @@ MAX ( calibration_summary[CalibrationSlope] )
 
 Calibration In The Large =
 MAX ( calibration_summary[MeanPredicted] ) - MAX ( calibration_summary[ObservedRate] )
+
+// ============================================================
+// Added in the Power BI build (already in the .pbix)
+// Documentation only: everything below already exists in powerbi/NHANES_CHD_Report.pbix,
+// which is built from powerbi/pbi_inputs.xlsx (the outputs/ tables reshaped for Power BI).
+// In the .pbix the threshold curve table is named `threshold` (not threshold_curve, as above)
+// and the pooled tables are prevalence_pooled and odds_ratios_pooled.
+// ============================================================
+
+// ---------- Decision-threshold slider (page 2) ----------
+
+// Parameter table (Modeling > New parameter > Numeric range), disconnected from the data:
+// 'Threshold choice' = GENERATESERIES ( 0.05, 0.95, 0.05 )   data type: fixed decimal
+// Shown as a single-value slider, default 0.40. Because it is not related to `threshold`,
+// the curves stay complete while the cards and the reference line follow the slider.
+
+// Measure in threshold
+Selected Threshold =
+ROUND ( SELECTEDVALUE ( 'Threshold choice'[Threshold choice], 0.4 ), 2 )
+
+// ROUND on both sides avoids floating-point mismatches between the two series.
+// REMOVEFILTERS keeps the cards from changing when other visuals are clicked.
+Sensitivity at Threshold =
+VAR t = [Selected Threshold]
+RETURN
+    CALCULATE (
+        MAX ( threshold[Sensitivity] ),
+        REMOVEFILTERS ( threshold ),
+        FILTER ( ALL ( threshold[Threshold] ), ROUND ( threshold[Threshold], 2 ) = t )
+    )
+
+Specificity at Threshold =
+VAR t = [Selected Threshold]
+RETURN
+    CALCULATE (
+        MAX ( threshold[Specificity] ),
+        REMOVEFILTERS ( threshold ),
+        FILTER ( ALL ( threshold[Threshold] ), ROUND ( threshold[Threshold], 2 ) = t )
+    )
+
+Share Flagged =
+VAR t = [Selected Threshold]
+RETURN
+    CALCULATE (
+        MAX ( threshold[FlaggedShare] ),
+        REMOVEFILTERS ( threshold ),
+        FILTER ( ALL ( threshold[Threshold] ), ROUND ( threshold[Threshold], 2 ) = t )
+    )
+
+// Threshold chart: Analytics pane > X-axis constant line, value bound to [Selected Threshold]
+// (fx > Format style: Field value). This is the orange reference line that moves with the slider.
+
+// ---------- Pooled 2013-March 2020 (page 1) ----------
+
+// Measure in prevalence_pooled. Returns text so the card shows "20,469".
+Pooled Adults =
+FORMAT (
+    CALCULATE ( MAX ( prevalence_pooled[n] ), REMOVEFILTERS ( prevalence_pooled ), prevalence_pooled[Level] = "All adults" ),
+    "#,0"
+)
+
+// Forest plot as a stacked bar chart on a log x-axis (0.5-4.5), odds_ratios_pooled, one row per Term.
+// Segments from left to right: invisible offset up to CI_low, CI line up to just left of the point,
+// the point itself (4% of the OR wide, coloured by significance), CI line from just right of the point to CI_high.
+// The stacked total is CI_high, so the segment boundaries land at CI_low, 0.98*OR, 1.02*OR and CI_high.
+// Format FP Start with no fill; give FP Point Sig and FP Point NS their own colours.
+FP Start =
+MIN ( odds_ratios_pooled[CI_low] )
+
+FP CI Left =
+MIN ( odds_ratios_pooled[OddsRatio] ) * 0.98 - MIN ( odds_ratios_pooled[CI_low] )
+
+FP Point Sig =
+IF ( SELECTEDVALUE ( odds_ratios_pooled[Significant] ) = "CI excludes 1", MIN ( odds_ratios_pooled[OddsRatio] ) * 0.04 )
+
+FP Point NS =
+IF ( SELECTEDVALUE ( odds_ratios_pooled[Significant] ) = "CI includes 1", MIN ( odds_ratios_pooled[OddsRatio] ) * 0.04 )
+
+FP CI Right =
+MIN ( odds_ratios_pooled[CI_high] ) - MIN ( odds_ratios_pooled[OddsRatio] ) * 1.02
+
+// ---------- Calculated columns (Modeling > New column), not measures ----------
+
+// odds_ratios_pooled: 1 = largest odds ratio
+OR Rank =
+RANKX ( odds_ratios_pooled, odds_ratios_pooled[OddsRatio], , DESC, DENSE )
+
+// odds_ratios_pooled: axis label; Column tools > Sort by column > OR Rank
+OR Label =
+odds_ratios_pooled[Term] & " " & FORMAT ( odds_ratios_pooled[OddsRatio], "0.00" )
+    & " (" & FORMAT ( odds_ratios_pooled[CI_low], "0.00" ) & "–" & FORMAT ( odds_ratios_pooled[CI_high], "0.00" ) & ")"
+
+// funnel: readable step names for the funnel visual
+Step Label =
+SWITCH (
+    funnel[Order],
+    1, "Rows after joining 6 files",
+    2, "Unique participants",
+    3, "Rows with a CHD answer",
+    4, "Participants with a CHD answer"
+)

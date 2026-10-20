@@ -1,11 +1,44 @@
 {
   "name": "NHANES CHD",
-  "dataColors": ["#1A73E8", "#BDC1C6", "#5F6368", "#D93025", "#188038"],
+  "dataColors": ["#1F4E79", "#A7B1BB", "#E07B39", "#2A9D8F", "#7A5C99", "#5B6770", "#C9D6E3", "#F2B880"],
   "background": "#FFFFFF",
-  "foreground": "#202124",
-  "tableAccent": "#1A73E8",
+  "foreground": "#1B2733",
+  "tableAccent": "#1F4E79",
+  "good": "#2A9D8F",
+  "neutral": "#A7B1BB",
+  "bad": "#C8553D",
   "textClasses": {
-    "title": {"fontSize": 14, "fontFace": "Segoe UI Semibold", "color": "#202124"},
-    "label": {"fontSize": 10, "fontFace": "Segoe UI", "color": "#5F6368"}
+    "callout": {"fontSize": 26, "fontFace": "Segoe UI Semibold", "color": "#1F4E79"},
+    "title": {"fontSize": 12, "fontFace": "Segoe UI Semibold", "color": "#1B2733"},
+    "header": {"fontSize": 12, "fontFace": "Segoe UI Semibold", "color": "#1B2733"},
+    "label": {"fontSize": 9, "fontFace": "Segoe UI", "color": "#5B6770"}
+  },
+  "visualStyles": {
+    "*": {
+      "*": {
+        "title": [{"show": true, "fontSize": 12, "fontFamily": "Segoe UI Semibold", "fontColor": {"solid": {"color": "#1B2733"}}}],
+        "subTitle": [{"fontSize": 9, "fontFamily": "Segoe UI", "fontColor": {"solid": {"color": "#5B6770"}}}],
+        "background": [{"show": true, "color": {"solid": {"color": "#FFFFFF"}}, "transparency": 0}],
+        "border": [{"show": true, "color": {"solid": {"color": "#E1E6EB"}}, "radius": 6}],
+        "dropShadow": [{"show": false}],
+        "padding": [{"top": 10, "bottom": 10, "left": 12, "right": 12}],
+        "categoryAxis": [{"fontSize": 9, "labelColor": {"solid": {"color": "#5B6770"}}, "titleFontSize": 9, "titleColor": {"solid": {"color": "#5B6770"}}, "gridlineColor": {"solid": {"color": "#ECEFF2"}}}],
+        "valueAxis": [{"fontSize": 9, "labelColor": {"solid": {"color": "#5B6770"}}, "titleFontSize": 9, "titleColor": {"solid": {"color": "#5B6770"}}, "gridlineColor": {"solid": {"color": "#ECEFF2"}}, "gridlineStyle": "solid"}],
+        "legend": [{"fontSize": 9, "labelColor": {"solid": {"color": "#5B6770"}}}],
+        "labels": [{"fontSize": 9, "color": {"solid": {"color": "#1B2733"}}}]
+      }
+    },
+    "page": {
+      "*": {
+        "background": [{"color": {"solid": {"color": "#F3F5F7"}}, "transparency": 0}],
+        "outspace": [{"color": {"solid": {"color": "#E9EDF1"}}, "transparency": 0}]
+      }
+    },
+    "textbox": {
+      "*": {
+        "background": [{"show": false}],
+        "border": [{"show": false}]
+      }
+    }
   }
 }

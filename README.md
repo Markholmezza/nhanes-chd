@@ -113,8 +113,8 @@ analysis/
   svy_logistic.R                           optional: re-runs sections 12-13 in R `survey` as an independent cross-check
 data/            raw NHANES files (raw/ 2013-2014 CSVs, raw_xpt/ 2015-2020 XPT; both git-ignored) and the v1 artifacts the audit reproduces   -> data/README.md
 outputs/         analytic tables (CSV) consumed by Power BI, written by the audit and temporal-validation notebooks
-powerbi/         POWERBI_GUIDE.md (page layouts, visual specs), measures.dax, theme.json
-docs/            TRIPOD methods, figures
+powerbi/         NHANES_CHD_Report.pbix (3-page report), pbi_inputs.xlsx (its data), POWERBI_GUIDE.md, measures.dax, theme.json
+docs/            TRIPOD methods, README figures, Power BI screenshots (powerbi_page1-3.png) and threshold-slider GIF
 ```
 
 ## Data
@@ -137,9 +137,25 @@ Rscript analysis/svy_logistic.R      # optional cross-check; needs install.packa
 
 The audit notebook reads the v1 artifacts (`data/selected_features_v1.csv`, `data/train_split_smote.csv`, `data/test_split.csv`, included) so the before/after comparison is reproducible; see `data/README.md`. All notebooks are committed with their executed outputs.
 
-## Power BI dashboard
+## Power BI report
 
-Planned three-page report built from `outputs/`: (1) cohort and CHD prevalence by clinical risk group with sex/age slicers and a weighted/unweighted toggle; (2) the audit story — rows-to-participants funnel, leakage share, AUC before vs after with bootstrap error bars, an interactive decision-threshold explorer, and odds ratios; (3) U.S. population estimates with design-based CIs, calibration plot, decision curve and the missing-data sensitivity table. Build instructions, DAX measures and the theme are in [`powerbi/`](powerbi/POWERBI_GUIDE.md).
+Three-page Power BI Desktop report, [`powerbi/NHANES_CHD_Report.pbix`](powerbi/NHANES_CHD_Report.pbix), built from [`powerbi/pbi_inputs.xlsx`](powerbi/pbi_inputs.xlsx) (the `outputs/` tables reshaped for Power BI). Open it in Power BI Desktop (free); no data source connection is needed.
+
+1. **U.S. population (2013–March 2020).** Pooled survey-weighted CHD prevalence 3.8% (95% CI 3.3–4.5%; 20,469 examined adults, 891 cases), prevalence by cycle with design-based CIs, prevalence by risk group (2013–2014, weighted vs unweighted), and a forest plot of pooled survey-weighted odds ratios on a log scale.
+2. **Data audit (2013–2014).** Rows-to-participants funnel (20,194 → 5,751), leakage KPIs (2.63 rows per person, 75.4% of test rows copied in training, random forest AUC 0.999 → 0.858), AUC before vs after with bootstrap 95% CIs, and an interactive decision-threshold slider.
+3. **Model validation.** Temporal validation within NHANES: AUC by cycle with bootstrap CIs (trained on 2013–2014 only vs leave-one-cycle-out), decile calibration plot against the identity line, and the decision curve.
+
+Every visual carries a one-line takeaway. KPI measures are written in DAX and use `REMOVEFILTERS` so headline numbers do not change when other visuals are clicked. The threshold slider is a numeric-range parameter disconnected from the data, so the curves stay complete while the cards and the orange reference line follow the selected value.
+
+Drag the decision-threshold slider: sensitivity, specificity and the share of adults flagged update, and the orange line moves along the curves.
+
+![Threshold slider demo](docs/powerbi_threshold.gif)
+
+![Power BI page 1: U.S. population](docs/powerbi_page1.png)
+![Power BI page 2: data audit](docs/powerbi_page2.png)
+![Power BI page 3: model validation](docs/powerbi_page3.png)
+
+A public Publish-to-web link is not available because the university Power BI tenant disables it; the screenshots, GIF and .pbix are the reference. Page specs are in [`powerbi/POWERBI_GUIDE.md`](powerbi/POWERBI_GUIDE.md); DAX in [`powerbi/measures.dax`](powerbi/measures.dax).
 
 ## Methods summary
 
