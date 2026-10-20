@@ -35,6 +35,7 @@ Triglycerides were missing for 55.7% because NHANES measures them only in the mo
 | AUC, random forest | 0.858 (0.835-0.879); paired difference vs LR +0.001 (-0.011 to +0.012) |
 | AUC, KNN | 0.748 (0.713-0.781) |
 | AUC, PSO-ANN (class-weighted) | 0.836 (0.812-0.860); paired difference LR minus PSO-ANN +0.023 (0.011 to 0.035); five seeds 0.834-0.851. Unweighted network: calibration slope 0.74, Brier 0.0366. SMOTE inside each fold: AUC 0.803 (0.778-0.829), slope 0.41 |
+| Outreach capacity (LR, out-of-fold, analytic sample, unweighted) | calling the riskiest 5%, 10%, 20%, 30% reaches 31%, 50%, 74%, 86% of cases (lift 6.3, 5.0, 3.7, 2.9) |
 | Calibration, unweighted LR | mean predicted 4.05% vs observed 4.03%, slope 0.94, Brier 0.035 (no-skill 0.039) |
 | Calibration, class-weighted LR | mean predicted 30.1%, slope 0.78, Brier 0.151 |
 | Decision curve | unweighted LR beats treat-all and treat-none at every threshold 1-30%; class-weighted LR is below treat-none from 5% |

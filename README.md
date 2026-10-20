@@ -47,6 +47,19 @@ Screening operating point (logistic regression, 5-fold out-of-fold): at a 0.40 t
 
 **PSO-ANN re-evaluated** ([`notebooks/pso_ann_revalidation.ipynb`](notebooks/pso_ann_revalidation.ipynb)): the paper's network (5 hidden neurons, weights initialized by particle swarm optimization with 30 particles × 100 iterations, then backpropagation) on the same folds, preprocessing and 19 predictors, with no tuning. Class-weighted it reaches AUC 0.836, below logistic regression in all five random seeds tried (0.834–0.851). The unweighted network averages the right risk (4.12% vs 4.03%) but its predictions are too extreme (calibration slope 0.74, Brier 0.0366 vs 0.0352 for unweighted LR). With SMOTE inside each fold, as in v1 but without the leakage, AUC is 0.803 (0.778–0.829), calibration slope 0.41. In short, under the paper's specification and without tuning, PSO-ANN (AUC 0.836) did not match logistic regression (0.859); backpropagation added little after PSO initialization and the network trained on 80% of each fold, so this does not show that neural networks cannot help with these predictors.
 
+### What this means in practice
+
+A care-management team rarely calls everyone; it has a fixed outreach capacity. Ranking adults by the logistic regression's predicted risk (out-of-fold, no new model) and calling only the top of the list ([`notebooks/screening_capacity.ipynb`](notebooks/screening_capacity.ipynb), [`outputs/gains_table.csv`](outputs/gains_table.csv)):
+
+| Outreach capacity (riskiest adults called) | CHD cases reached | PPV (calls that reach a case) | Lift vs random calls | Per 10,000 adults in the sample: called → cases reached (random calls) |
+|---|---|---|---|---|
+| 5% | 31% | 25% | 6.3× | 501 → 127 (20) |
+| 10% | 50% | 20% | 5.0× | 1,002 → 202 (40) |
+| 20% | 74% | 15% | 3.7× | 2,001 → 297 (81) |
+| 30% | 86% | 12% | 2.9× | 3,001 → 346 (121) |
+
+Calling the riskiest 10% reaches half of all cases, five times what the same number of random calls would; going from 10% to 30% of adults adds only another 36% of cases. The 30% row is essentially the 0.40-threshold operating point above. "Per 10,000" figures are scaled from the analytic sample (5,751 adults, unweighted prevalence 4.03%), not survey-weighted U.S. estimates. NHANES is cross-sectional and CHD is a self-reported past diagnosis, so this demonstrates a capacity-based decision framework, not a member-screening model ready to deploy.
+
 ### Biostatistical extensions
 
 | Question | Method | Result |
@@ -117,6 +130,7 @@ notebooks/
   baseline_v1_original.ipynb               the original modeling notebook, kept as the "before" for the audit
   external_validation.ipynb                temporal validation on 2015-2016 and 2017-March 2020, leave-one-cycle-out validation, final model; pooled survey analysis
   pso_ann_revalidation.ipynb               the paper's PSO-ANN re-evaluated on the corrected folds (class-weighted, unweighted, SMOTE in fold)
+  screening_capacity.ipynb                 gains table: CHD cases reached at 5-30% outreach capacity (LR out-of-fold predictions)
 analysis/
   svy_logistic.R                           optional: re-runs sections 12-13 in R `survey` as an independent cross-check
 data/            raw NHANES files (raw/ 2013-2014 CSVs, raw_xpt/ 2015-2020 XPT; both git-ignored) and the v1 artifacts the audit reproduces   -> data/README.md
@@ -141,6 +155,7 @@ jupyter nbconvert --to notebook --execute notebooks/data_preprocessing.ipynb    
 jupyter nbconvert --to notebook --execute notebooks/nhanes_chd_audit_and_revalidation.ipynb  # -> outputs/*.csv
 jupyter nbconvert --to notebook --execute notebooks/external_validation.ipynb  # needs data/raw_xpt/, see Data
 jupyter nbconvert --to notebook --execute notebooks/pso_ann_revalidation.ipynb  # about 2 minutes
+jupyter nbconvert --to notebook --execute notebooks/screening_capacity.ipynb
 Rscript analysis/svy_logistic.R      # optional cross-check; needs install.packages(c("survey", "mice", "mitools"))
 ```
 

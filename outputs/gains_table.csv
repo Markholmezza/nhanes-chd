@@ -1,0 +1,5 @@
+CapacityShare,Contacted,CasesFound,CapturedShare,PPV,Lift,ContactedPer10k,CasesFoundPer10k,CasesFoundPer10kRandom,Basis
+0.05,288,73,0.3147,0.2535,6.2833,501,127,20,"Analytic sample, unweighted (5,751 adults, prevalence 4.03%)"
+0.1,576,116,0.5,0.2014,4.9922,1002,202,40,"Analytic sample, unweighted (5,751 adults, prevalence 4.03%)"
+0.2,1151,171,0.7371,0.1486,3.6828,2001,297,81,"Analytic sample, unweighted (5,751 adults, prevalence 4.03%)"
+0.3,1726,199,0.8578,0.1153,2.858,3001,346,121,"Analytic sample, unweighted (5,751 adults, prevalence 4.03%)"
