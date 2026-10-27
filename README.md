@@ -2,7 +2,9 @@
 
 **End-to-end analysis of CDC NHANES 2013–2020 (20,469 adults) in Python, R and Power BI. In Python (pandas, scikit-learn) I found and fixed a data-leakage bug that had inflated a heart-disease model's AUC from 0.86 to 0.999, then validated the corrected model across three survey cycles. I implemented survey-weighted, design-based estimation in numpy (cross-checked against R `survey`) to estimate U.S. adult CHD prevalence at 3.8% (95% CI 3.3–4.5%), and built a 3-page interactive Power BI report with DAX measures and a what-if threshold slider.**
 
-[Headline numbers](#headline-numbers) · [Power BI report](#power-bi-report) · [Methods](docs/TRIPOD_methods.md)
+**Interactive R Shiny app:** [ziang-zhang.shinyapps.io/nhanes-chd-explorer](https://ziang-zhang.shinyapps.io/nhanes-chd-explorer/) — outreach planner, survey-weighted prevalence by subgroup, and live data quality checks ([code](nhanes_chd_shiny/)).
+
+[Headline numbers](#headline-numbers) · [Shiny app](https://ziang-zhang.shinyapps.io/nhanes-chd-explorer/) · [Power BI report](#power-bi-report) · [Methods](docs/TRIPOD_methods.md)
 
 ![Power BI report: decision-threshold slider](docs/powerbi_threshold.gif)
 
