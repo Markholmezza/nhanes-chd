@@ -1,9 +1,9 @@
 # NHANES CHD Explorer (R Shiny)
+
 **Live app:** [ziang-zhang.shinyapps.io/nhanes-chd-explorer](https://ziang-zhang.shinyapps.io/nhanes-chd-explorer/)
 
 An interactive companion to the [nhanes-chd](https://github.com/Markholmezza/nhanes-chd) audit:
 5,751 adults from CDC NHANES 2013-2014, 232 with self-reported coronary heart disease.
-
 | Tab | What it does |
 |---|---|
 | Outreach planner | Pick an outreach capacity or a risk cutoff; see adults flagged, cases reached (sensitivity), PPV, lift, specificity, a confusion matrix, the cumulative gains curve and decile calibration, all computed live from 5-fold out-of-fold predictions. |
