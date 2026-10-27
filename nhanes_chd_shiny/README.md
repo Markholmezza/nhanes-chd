@@ -1,4 +1,5 @@
 # NHANES CHD Explorer (R Shiny)
+**Live app:** [ziang-zhang.shinyapps.io/nhanes-chd-explorer](https://ziang-zhang.shinyapps.io/nhanes-chd-explorer/)
 
 An interactive companion to the [nhanes-chd](https://github.com/Markholmezza/nhanes-chd) audit:
 5,751 adults from CDC NHANES 2013-2014, 232 with self-reported coronary heart disease.
@@ -13,7 +14,7 @@ An interactive companion to the [nhanes-chd](https://github.com/Markholmezza/nha
 
 ```r
 install.packages(c("shiny", "bslib", "survey", "ggplot2", "DT"))
-shiny::runApp("shiny_app")   # or open app.R in RStudio and click Run App
+shiny::runApp("nhanes_chd_shiny")   # or open app.R in RStudio and click Run App
 ```
 
 ## Expected numbers (sanity checks)
@@ -37,7 +38,7 @@ Create a free account at shinyapps.io, then:
 ```r
 install.packages("rsconnect")
 rsconnect::setAccountInfo(name = "<account>", token = "<token>", secret = "<secret>")
-rsconnect::deployApp("shiny_app", appName = "nhanes-chd-explorer")
+rsconnect::deployApp("nhanes_chd_shiny", appName = "nhanes-chd-explorer")
 ```
 
 NHANES is cross-sectional and CHD is a self-reported past diagnosis; the outreach view illustrates a capacity-based decision framework, not a screening tool ready to deploy.
