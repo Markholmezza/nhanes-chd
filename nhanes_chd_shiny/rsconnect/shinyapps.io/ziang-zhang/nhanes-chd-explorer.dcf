@@ -1,0 +1,10 @@
+name: nhanes-chd-explorer
+title:
+username: ziang-zhang
+account: ziang-zhang
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 18287569
+bundleId: 12743571
+url: https://ziang-zhang.shinyapps.io/nhanes-chd-explorer/
+version: 1
