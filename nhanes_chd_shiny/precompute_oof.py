@@ -3,7 +3,7 @@
 Same pipeline as notebooks/nhanes_chd_audit_and_revalidation.ipynb (corrected setup):
 one row per participant, participant-level stratified 5-fold CV, mean imputation and
 scaling fit inside each fold. Run from the nhanes-chd repo root:
-    python shiny_app/precompute_oof.py
+    python nhanes_chd_shiny/precompute_oof.py
 Expected: out-of-fold AUC 0.859 (class-weighted) and 0.860 (unweighted).
 """
 import warnings
